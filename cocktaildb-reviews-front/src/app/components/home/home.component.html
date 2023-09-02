@@ -1,0 +1,42 @@
+<main class="mx-auto border p-2">
+    <h1 class="w-100 text-center">Home</h1>
+    <h2 class="w-100 text-center">Random cocktails</h2>
+
+    <div class="
+        random-cocktails
+        d-flex flex-wrap justify-content-md-center justify-content-around
+        gap-2
+    "
+    >
+        <app-cocktail-card *ngFor="let cocktail of randomCocktails" [cocktail]="cocktail" />
+    </div>
+
+    <hr>
+
+    <h3 class="w-100 text-center">Search Cocktails</h3>
+
+    <form [formGroup]="searchForm" >
+        <div class="form-group">
+            <input
+                type="text"
+                class="form-control text-center"
+                id="search-by-name-input"
+                formControlName="name"
+            />
+            <button (click)="searchCocktails(SearchType.Name, searchForm.value.name)" class="btn btn-secondary">Search by name</button>
+        </div>
+
+        <div class="form-group">
+            <select formControlName="ingredient" id="select-ingredient">
+                <option *ngFor="let i of ingredients" [value]="i">{{i}}</option>
+            </select>
+
+            <button
+                (click)="searchCocktails(SearchType.Ingredient, searchForm.value.ingredient)"
+                class="btn btn-secondary"
+            >
+                Search by ingredient
+            </button>
+        </div>
+    </form>
+</main>

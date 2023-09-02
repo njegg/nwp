@@ -1,0 +1,9 @@
+main {
+    max-width: 800px;
+    margin-top: 1rem;
+    min-height: 95vh;
+}
+
+h1 {
+    margin-bottom: 5rem;
+}
