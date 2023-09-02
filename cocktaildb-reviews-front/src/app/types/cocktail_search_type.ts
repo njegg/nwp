@@ -6,5 +6,4 @@ export enum CocktailSearchType {
     Category,
     Alcoholic,
     FirstLetter,
-    ID,
 }

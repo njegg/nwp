@@ -4,9 +4,13 @@ import { range } from 'rxjs';
 import { Cocktail } from 'src/app/model/cocktail';
 import { AttributeType } from 'src/app/model/cocktail_attributes';
 import { CocktailService } from 'src/app/services/cocktail.service';
-import { CocktailAttributesService } from 'src/app/services/cocktail_attributes.service';
 import { CocktailSearchType } from 'src/app/types/cocktail_search_type';
-import { match } from 'src/app/types/match';
+import { match } from 'src/app/types/functional_types/match';
+import { None } from 'src/app/types/functional_types/none';
+import Ok from 'src/app/types/functional_types/ok';
+import { Result } from 'src/app/types/functional_types/result';
+import Some from 'src/app/types/functional_types/some';
+import { Option } from 'src/app/types/functional_types/option';
 
 @Component({
     selector: 'app-home',
@@ -16,7 +20,6 @@ import { match } from 'src/app/types/match';
 export class HomeComponent implements OnInit {
     constructor(
         private cocktailService: CocktailService,
-        private attributeService: CocktailAttributesService,
         private fb: FormBuilder,
     ) { }
 
@@ -24,7 +27,12 @@ export class HomeComponent implements OnInit {
 
     randomCocktails: Cocktail[] = []
     cocktails: Cocktail[] = [];
+
+    err: Result<string[]> = Ok([]);
+
     ingredients: string[] = [];
+    categories: string[] = [];
+    alchocolicFilter: string[] = [];
 
     searchForm = this.fb.group({
         "name": [""],
@@ -39,7 +47,7 @@ export class HomeComponent implements OnInit {
         //     })
         // )
 
-        this.attributeService.getAttributes(AttributeType.Ingredient)
+        this.cocktailService.getAttributes(AttributeType.Ingredient)
             .subscribe({
                 next: i => this.ingredients = i,
                 error: e => console.error(e),

@@ -9,7 +9,7 @@ export function cocktailResponseToCocktail(cocktail: CocktailResponse): Cocktail
     }
 }
 
-export function cocktailsResponseToCocktail(cocktails: CocktailsResponse): Cocktail[] {
+export function cocktailsResponseToCocktail(cocktails: CocktailListResponse): Cocktail[] {
     return cocktails.drinks ? cocktails.drinks.map(cocktailResponseToCocktail) : [];
 }
 
@@ -93,6 +93,6 @@ export interface CocktailResponse {
     dateModified: Date,
 }
 
-export interface CocktailsResponse {
+export interface CocktailListResponse {
     drinks: CocktailResponse[]
 }
