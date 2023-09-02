@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Form, FormBuilder, Validators } from '@angular/forms';
-import { range } from 'rxjs';
+import { map, range } from 'rxjs';
 import { Cocktail } from 'src/app/model/cocktail';
 import { AttributeType } from 'src/app/model/cocktail_attributes';
 import { CocktailService } from 'src/app/services/cocktail.service';
@@ -11,6 +11,12 @@ import Ok from 'src/app/types/functional_types/ok';
 import { Result } from 'src/app/types/functional_types/result';
 import Some from 'src/app/types/functional_types/some';
 import { Option } from 'src/app/types/functional_types/option';
+
+
+enum FilterType {
+    Name, Ingredent, Category, Alcoholic, Glass
+}
+
 
 @Component({
     selector: 'app-home',
@@ -23,46 +29,76 @@ export class HomeComponent implements OnInit {
         private fb: FormBuilder,
     ) { }
 
-    SearchType = CocktailSearchType;
+    CocktailSearchType = CocktailSearchType;
 
     randomCocktails: Cocktail[] = []
     cocktails: Cocktail[] = [];
 
-    err: Result<string[]> = Ok([]);
-
     ingredients: string[] = [];
     categories: string[] = [];
-    alchocolicFilter: string[] = [];
+    glasses: string[] = [];
+    alchocolicTypes: string[] = [];
+
+    letters: string[] = Array(26).fill('').map((_, i) => String.fromCharCode("A".charCodeAt(0) + i));
+
+    filterTypes = [
+        CocktailSearchType.Name,
+        CocktailSearchType.Ingredient,
+        CocktailSearchType.Glass,
+        CocktailSearchType.Alcoholic,
+        CocktailSearchType.Category,
+    ];
+
+    selectedFilterType: CocktailSearchType = CocktailSearchType.Name
+
+    searchQuery: string = "";
 
     searchForm = this.fb.group({
         "name": [""],
         "ingredient": [""],
+        "category": [""],
+        "glass": [""],
+        "alcoholic": [""],
+        "filterType": [FilterType.Name]
     });
 
     ngOnInit(): void {
-        // range(2).forEach(() =>
-        //     this.cocktailService.getRandomCocktail().subscribe({
-        //         next: cocktail => this.randomCocktails.push(cocktail),
-        //         error: err => console.error(err),
-        //     })
-        // )
+        range(0).forEach(() => 
+            this.cocktailService.getRandomCocktail()
+                .subscribe({
+                    next: cocktail => this.randomCocktails.push(cocktail),
+                    error: err => console.error(err)
+                }))
 
-        this.cocktailService.getAttributes(AttributeType.Ingredient)
+        this.setAttributes(AttributeType.Glass, this.glasses);
+        this.setAttributes(AttributeType.Ingredient, this.ingredients);
+        this.setAttributes(AttributeType.Alcoholic, this.alchocolicTypes);
+        this.setAttributes(AttributeType.Category, this.categories);
+    }
+
+    setAttributes(type: AttributeType, where: string[]): void {
+        this.cocktailService.getAttributes(type)
             .subscribe({
-                next: i => this.ingredients = i,
+                next: res => where.push(...res),
                 error: e => console.error(e),
             })
     }
 
-    searchCocktails(type: CocktailSearchType, query: string | null | undefined) {
+    searchCocktails(type: CocktailSearchType, query: string): void {
         if (!query) return;
+
+        console.log(query);
 
         match(this.cocktailService.searchBy(type, query), {
             Ok: res => res.subscribe({
-                next: c => console.log(c),
-                error: e => console.error(e.message),
+                next: res => this.cocktails = res,
+                error: err => console.error(err.message),
             }),
             Err: err => console.error(err.message),
         });
+    }
+
+    reset() {
+        this.searchQuery = "";
     }
 }

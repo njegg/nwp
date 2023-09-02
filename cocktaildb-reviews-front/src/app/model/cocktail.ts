@@ -9,7 +9,7 @@ export function cocktailResponseToCocktail(cocktail: CocktailResponse): Cocktail
     }
 }
 
-export function cocktailsResponseToCocktail(cocktails: CocktailListResponse): Cocktail[] {
+export function cocktailListResponseToCocktailList(cocktails: CocktailListResponse): Cocktail[] {
     return cocktails.drinks ? cocktails.drinks.map(cocktailResponseToCocktail) : [];
 }
 

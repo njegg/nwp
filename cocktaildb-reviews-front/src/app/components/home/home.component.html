@@ -15,28 +15,91 @@
 
     <h3 class="w-100 text-center">Search Cocktails</h3>
 
-    <form [formGroup]="searchForm" >
-        <div class="form-group">
-            <input
-                type="text"
-                class="form-control text-center"
-                id="search-by-name-input"
-                formControlName="name"
-            />
-            <button (click)="searchCocktails(SearchType.Name, searchForm.value.name)" class="btn btn-secondary">Search by name</button>
-        </div>
-
-        <div class="form-group">
-            <select formControlName="ingredient" id="select-ingredient">
-                <option  *ngFor="let i of ingredients" [value]="i">{{i}}</option>
-            </select>
-
-            <button
-                (click)="searchCocktails(SearchType.Ingredient, searchForm.value.ingredient)"
-                class="btn btn-secondary"
+    <div>
+        <label
+            *ngFor="let filterType of filterTypes"
+            (click)="reset()"
+        >
+            <input type="radio"
+                type="radio"
+                [value]="filterType"
+                [(ngModel)]="selectedFilterType"
             >
-                Search by ingredient
-            </button>
+            {{ CocktailSearchType[filterType] }}
+        </label>
+    </div>
+
+    <form name="searchForm">
+        <input
+            *ngIf="selectedFilterType == CocktailSearchType.Name"
+            type="text"
+            class="form-control text-center"
+            id="search-by-name-input"
+            name="filterType"
+            [value]="searchQuery"
+            [(ngModel)]="searchQuery"
+        />
+
+        <select
+            *ngIf="selectedFilterType == CocktailSearchType.Ingredient"
+            id="select-ingredient"
+            name="ingredient-filter"
+
+            [value]="searchQuery"
+            [(ngModel)]="searchQuery"
+        >
+            <option *ngFor="let i of ingredients" [value]="i">{{i}}</option>
+        </select>
+
+        <select
+            *ngIf="selectedFilterType == CocktailSearchType.Category"
+            id="select-category"
+            name="category-filter"
+            
+            [value]="searchQuery"
+            [(ngModel)]="searchQuery"
+        >
+            <option *ngFor="let c of categories" [value]="c">{{c}}</option>
+        </select>
+
+        <select
+            *ngIf="selectedFilterType == CocktailSearchType.Glass"
+            id="select-category"
+            name="glass-filter"
+
+            [value]="searchQuery"
+            [(ngModel)]="searchQuery"
+        >
+            <option *ngFor="let g of glasses" [value]="g">{{g}}</option>
+        </select>
+
+        <button
+            (click)="searchCocktails(selectedFilterType, searchQuery)"
+            class="btn btn-secondary"
+        >
+            Search by {{ CocktailSearchType[selectedFilterType] }}
+        </button>
+
+        <div
+            class="d-flex flex-row justify-content-around flex-wrap"
+        >
+            <span
+                *ngFor="let c of letters"
+                class="letter-filter mx-2"
+                (click)="searchCocktails(CocktailSearchType.FirstLetter, c)"
+            >
+                {{ c }}
+            </span>
         </div>
     </form>
+
+    <div class="
+        random-cocktails
+        d-flex flex-wrap justify-content-md-center justify-content-around
+        gap-2
+    "
+    >
+        <app-cocktail-card *ngFor="let cocktail of cocktails" [cocktail]="cocktail" />
+    </div>
+
 </main>

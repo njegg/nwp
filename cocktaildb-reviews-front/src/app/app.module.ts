@@ -9,7 +9,7 @@ import { CocktailCardComponent } from './components/cocktail-card/cocktail-card.
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PillComponent } from './components/common/pill/pill.component';
 import { SearchDropdownComponent } from './components/common/search-dropdown/search-dropdown.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -25,6 +25,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     HttpClientModule,
     NgbModule,
     ReactiveFormsModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
