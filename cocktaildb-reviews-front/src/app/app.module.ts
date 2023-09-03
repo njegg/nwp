@@ -11,6 +11,7 @@ import { PillComponent } from './components/common/pill/pill.component';
 import { SearchDropdownComponent } from './components/common/search-dropdown/search-dropdown.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CocktailCardListComponent } from './components/cocktail-card-list/cocktail-card-list.component';
+import { CocktailDetailsComponent } from './components/cocktail-details/cocktail-details.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { CocktailCardListComponent } from './components/cocktail-card-list/cockt
     CocktailCardComponent,
     PillComponent,
     SearchDropdownComponent,
-    CocktailCardListComponent
+    CocktailCardListComponent,
+    CocktailDetailsComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,9 +1,3 @@
-main {
-    max-width: 800px;
-    margin-top: 1rem;
-    min-height: 95vh;
-}
-
 h1 {
     margin-bottom: 5rem;
 }
@@ -11,4 +5,16 @@ h1 {
 .letter-filter {
     font-size: 1.3rem;
     cursor: pointer;
+}
+
+.filter-type-radio:checked + .filter-type-label {
+    color: rgb(72, 72, 192);
+}
+
+.filter-type-label {
+    font-size: x-large;
+}
+
+.sticky-top {
+    top: 0.5rem;
 }

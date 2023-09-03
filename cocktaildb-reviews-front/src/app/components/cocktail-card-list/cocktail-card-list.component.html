@@ -1,8 +1,10 @@
-<div class="
-    random-cocktails
-    d-flex flex-wrap justify-content-md-center justify-content-around
-    gap-2
-"
+<div
+    *ngIf="cocktails.length"
+    class="
+        container
+        d-flex flex-wrap justify-content-md-center justify-content-evenly
+        gap-4
+    "
 >
     <app-cocktail-card *ngFor="let cocktail of cocktails" [cocktail]="cocktail" />
 </div>

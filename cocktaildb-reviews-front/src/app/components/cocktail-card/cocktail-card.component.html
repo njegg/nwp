@@ -1,29 +1,14 @@
-<div class="card d-flex flex-row p-1 bg-body-tertiary">
-    <div class="rounded">
-        <img
-            [src]="src"
-            [alt]="'image of ' + cocktail.name"
-            class="card-img h-100 w-100 object-fit-cover"
-            style="border-radius: 5%;"
-        >
+
+<a
+    routerLink="cocktail/{{cocktail.id}}"
+    class="card text-decoration-none"
+>
+    <img
+        class="w-100"
+        [src]="src"
+        [alt]="'image of ' + cocktail.name"
+    >
+    <div class="card-body text-decoration-none">
+        <h5 class="card-title">{{ cocktail.name }}</h5>
     </div>
-        <a
-            [href]="'/coctail/' + cocktail.id"
-            class="col-7 text-decoration-none text-info-emphasis"
-        >
-            <div class="p-2">
-                <h5 class="card-title">{{ cocktail.name }}</h5>
-
-                category: {{ cocktail.category }}
-                <br>
-                glass: {{ cocktail.glass }}
-                <br>
-                alcoholic: {{ cocktail.alcoholic }}
-
-                <!-- <div class="pills d-flex flex-row justify-content-start gap-1">
-                    <app-pill [text]="cocktail.category" url="#" />
-                    <app-pill [text]="cocktail.glass" url="#" />
-                </div> -->
-            </div>
-    </a>
-</div>
+</a>

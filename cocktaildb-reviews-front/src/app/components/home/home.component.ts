@@ -69,13 +69,23 @@ export class HomeComponent implements OnInit {
                 .subscribe({
                     next: res => {
                         match(res,{
-                            Ok: res => filterValues.push(...res),
+                            Ok: res => {
+                                filterValues.push(...res)
+                                filterValues.sort()
+                            },
                             Err: err => console.error(err),
                         })
                     },
                     error: err => console.error(err),
                 })
         }
+
+
+        this.cocktails = JSON.parse(localStorage.getItem('loaded cocktails') || '[]');
+    }
+
+    ngOnDestroy() {
+        localStorage.setItem('loaded cocktails',  JSON.stringify(this.cocktails));
     }
 
     searchCocktails(type: CocktailSearchType, query: string): void {

@@ -1,0 +1,10 @@
+<div *ngIf="cocktail" >
+    <img
+        width="200"
+        class="cocktail-image"
+        [src]="cocktail.imageSource"
+        alt="Image of {{cocktail.name}}"
+    >
+
+    {{ cocktail.name }}
+</div>

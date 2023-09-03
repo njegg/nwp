@@ -1,45 +1,57 @@
-<main class="mx-auto border p-2">
-    <h1 class="w-100 text-center">Home</h1>
-    <h2 class="w-100 text-center">Random cocktails</h2>
+<h1 class="w-100 text-center">Home</h1>
+<h2 class="w-100 text-center">Random cocktails</h2>
 
-    <app-cocktail-card-list [cocktails]="randomCocktails" />
+<app-cocktail-card-list [cocktails]="randomCocktails" />
 
-    <hr>
+<hr>
 
-    <h3 class="w-100 text-center">Search Cocktails</h3>
+<h3 class="w-100 text-center">Search Cocktails</h3>
 
-    <div>
-        <label
-            *ngFor="let filterType of filterTypes"
+<form name="searchForm" class="border p-1 sticky-top bg-body rounded p-2 my-2">
+
+    <!-- Radio input for selecting the filter type -->
+    <div class="d-flex justify-content-center gap-3 flex-wrap mb-2">
+        <div
+            *ngFor="let filterType of filterTypes; let i = index"
             (click)="resetSearchQuery()"
         >
-            <input type="radio"
+            <input
+                class="position-fixed opacity-0 filter-type-radio"
                 type="radio"
+                id="filter-type-{{i}}"
+                name="filter-type-{{i}}"
                 [value]="filterType"
                 [(ngModel)]="selectedFilterType"
             >
-            {{ CocktailSearchType[filterType] }}
-        </label>
+            <label
+                for="filter-type-{{i}}"
+                class="filter-type-label"
+            >
+                {{ CocktailSearchType[filterType] }}
+            </label>
+        </div>
     </div>
 
-    <form name="searchForm">
+    <div class="d-flex flex-column align-items-center gap-3 my-3">
+        <!-- Search by name -->
         <input
             *ngIf="selectedFilterType == CocktailSearchType.Name; else showDropdownFilters"
-            type="text"
             class="form-control text-center"
+            type="text"
             id="search-by-name-input"
-            name="filterType"
+            name="fitler-name"
             [value]="searchQuery"
             [(ngModel)]="searchQuery"
         />
 
+        <!-- Filter by dropdown value -->
         <ng-template #showDropdownFilters>
             <select
                 [value]="searchQuery"
                 [(ngModel)]="searchQuery"
-                name="dropdown-filter"
+                name="filter-dropdown"
             >
-                <option *ngFor="let val of dropdownFilters.get(selectedFilterType)">
+                <option *ngFor="let val of dropdownFilters.get(selectedFilterType)" selected>
                     {{ val }}
                 </option>
             </select>
@@ -51,17 +63,18 @@
         >
             Search
         </button>
+    </div>
 
-        <div class="d-flex flex-row justify-content-around flex-wrap" >
-            <span
-                *ngFor="let c of letters"
-                class="letter-filter mx-2"
-                (click)="searchCocktails(CocktailSearchType.FirstLetter, c)"
-            >
-                {{ c }}
-            </span>
-        </div>
-    </form>
+    <!-- Search by first letter -->
+    <div class="d-flex flex-row justify-content-around flex-wrap" >
+        <span
+            *ngFor="let c of letters"
+            class="letter-filter mx-2"
+            (click)="searchCocktails(CocktailSearchType.FirstLetter, c)"
+        >
+            {{ c }}
+        </span>
+    </div>
+</form>
 
-    <app-cocktail-card-list [cocktails]="cocktails" />
-</main>
+<app-cocktail-card-list [cocktails]="cocktails" />
