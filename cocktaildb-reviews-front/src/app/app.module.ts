@@ -10,6 +10,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PillComponent } from './components/common/pill/pill.component';
 import { SearchDropdownComponent } from './components/common/search-dropdown/search-dropdown.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CocktailCardListComponent } from './components/cocktail-card-list/cocktail-card-list.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     HomeComponent,
     CocktailCardComponent,
     PillComponent,
-    SearchDropdownComponent
+    SearchDropdownComponent,
+    CocktailCardListComponent
   ],
   imports: [
     BrowserModule,

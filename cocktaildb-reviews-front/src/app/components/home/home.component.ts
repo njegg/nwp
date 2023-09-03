@@ -1,16 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Form, FormBuilder, Validators } from '@angular/forms';
-import { map, range } from 'rxjs';
+import { range } from 'rxjs';
 import { Cocktail } from 'src/app/model/cocktail';
 import { AttributeType } from 'src/app/model/cocktail_attributes';
 import { CocktailService } from 'src/app/services/cocktail.service';
 import { CocktailSearchType } from 'src/app/types/cocktail_search_type';
 import { match } from 'src/app/types/functional_types/match';
-import { None } from 'src/app/types/functional_types/none';
-import Ok from 'src/app/types/functional_types/ok';
-import { Result } from 'src/app/types/functional_types/result';
-import Some from 'src/app/types/functional_types/some';
-import { Option } from 'src/app/types/functional_types/option';
 
 
 enum FilterType {
@@ -26,10 +20,10 @@ enum FilterType {
 export class HomeComponent implements OnInit {
     constructor(
         private cocktailService: CocktailService,
-        private fb: FormBuilder,
     ) { }
 
     CocktailSearchType = CocktailSearchType;
+    Array = Array;
 
     randomCocktails: Cocktail[] = []
     cocktails: Cocktail[] = [];
@@ -41,6 +35,9 @@ export class HomeComponent implements OnInit {
 
     letters: string[] = Array(26).fill('').map((_, i) => String.fromCharCode("A".charCodeAt(0) + i));
 
+    /**
+     * Used for selecting the filter method
+     */
     filterTypes = [
         CocktailSearchType.Name,
         CocktailSearchType.Ingredient,
@@ -48,19 +45,15 @@ export class HomeComponent implements OnInit {
         CocktailSearchType.Alcoholic,
         CocktailSearchType.Category,
     ];
-
     selectedFilterType: CocktailSearchType = CocktailSearchType.Name
 
-    searchQuery: string = "";
+    dropdownFilters = new Map<CocktailSearchType, string[]>()
+        .set(CocktailSearchType.Ingredient, [])
+        .set(CocktailSearchType.Glass, [])
+        .set(CocktailSearchType.Alcoholic, [])
+        .set(CocktailSearchType.Category, []);
 
-    searchForm = this.fb.group({
-        "name": [""],
-        "ingredient": [""],
-        "category": [""],
-        "glass": [""],
-        "alcoholic": [""],
-        "filterType": [FilterType.Name]
-    });
+    searchQuery: string = "";
 
     ngOnInit(): void {
         range(0).forEach(() => 
@@ -68,26 +61,25 @@ export class HomeComponent implements OnInit {
                 .subscribe({
                     next: cocktail => this.randomCocktails.push(cocktail),
                     error: err => console.error(err)
-                }))
+                })
+        );
 
-        this.setAttributes(AttributeType.Glass, this.glasses);
-        this.setAttributes(AttributeType.Ingredient, this.ingredients);
-        this.setAttributes(AttributeType.Alcoholic, this.alchocolicTypes);
-        this.setAttributes(AttributeType.Category, this.categories);
-    }
-
-    setAttributes(type: AttributeType, where: string[]): void {
-        this.cocktailService.getAttributes(type)
-            .subscribe({
-                next: res => where.push(...res),
-                error: e => console.error(e),
-            })
+        for (let [filterType, filterValues] of this.dropdownFilters) {
+            this.cocktailService.getAttributes(filterType)
+                .subscribe({
+                    next: res => {
+                        match(res,{
+                            Ok: res => filterValues.push(...res),
+                            Err: err => console.error(err),
+                        })
+                    },
+                    error: err => console.error(err),
+                })
+        }
     }
 
     searchCocktails(type: CocktailSearchType, query: string): void {
         if (!query) return;
-
-        console.log(query);
 
         match(this.cocktailService.searchBy(type, query), {
             Ok: res => res.subscribe({

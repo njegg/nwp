@@ -64,10 +64,16 @@ export class CocktailService {
      * Returns a list of possible cocktail attribute values.
      * Attributes are: `Glass`, `Category`, `Alcoholic`, `Ingredient`
      */
-    getAttributes(attributeType: AttributeType): Observable<string[]> {
+    getAttributes(searchType: CocktailSearchType): Observable<Result<string[]>> {
+        let urlLetter = CocktailSearchType.getAttributeUrlLetter(searchType);
+
         return this.http
-            .get<AttributeListResponse>( `${env.api}/list.php?${attributeType}=list`, this.getJsonBodyOptions)
-            .pipe(map(res => res.drinks.map(v => Object.values(v)[0])))
+            .get<AttributeListResponse>(`${env.api}/list.php?${urlLetter}=list`, this.getJsonBodyOptions)
+            .pipe(map(res =>
+                res.drinks ?
+                    Ok(res.drinks.map(v => Object.values(v)[0])) :
+                    Err(`'${CocktailSearchType[searchType]}' is not supported as attirbute type`)
+            ))
     }
 
     private searchByName(name: string): Result<Observable<Cocktail[]>> {

@@ -2,14 +2,7 @@
     <h1 class="w-100 text-center">Home</h1>
     <h2 class="w-100 text-center">Random cocktails</h2>
 
-    <div class="
-        random-cocktails
-        d-flex flex-wrap justify-content-md-center justify-content-around
-        gap-2
-    "
-    >
-        <app-cocktail-card *ngFor="let cocktail of randomCocktails" [cocktail]="cocktail" />
-    </div>
+    <app-cocktail-card-list [cocktails]="randomCocktails" />
 
     <hr>
 
@@ -31,7 +24,7 @@
 
     <form name="searchForm">
         <input
-            *ngIf="selectedFilterType == CocktailSearchType.Name"
+            *ngIf="selectedFilterType == CocktailSearchType.Name; else showDropdownFilters"
             type="text"
             class="form-control text-center"
             id="search-by-name-input"
@@ -40,49 +33,26 @@
             [(ngModel)]="searchQuery"
         />
 
-        <select
-            *ngIf="selectedFilterType == CocktailSearchType.Ingredient"
-            id="select-ingredient"
-            name="ingredient-filter"
-
-            [value]="searchQuery"
-            [(ngModel)]="searchQuery"
-        >
-            <option *ngFor="let i of ingredients" [value]="i">{{i}}</option>
-        </select>
-
-        <select
-            *ngIf="selectedFilterType == CocktailSearchType.Category"
-            id="select-category"
-            name="category-filter"
-            
-            [value]="searchQuery"
-            [(ngModel)]="searchQuery"
-        >
-            <option *ngFor="let c of categories" [value]="c">{{c}}</option>
-        </select>
-
-        <select
-            *ngIf="selectedFilterType == CocktailSearchType.Glass"
-            id="select-category"
-            name="glass-filter"
-
-            [value]="searchQuery"
-            [(ngModel)]="searchQuery"
-        >
-            <option *ngFor="let g of glasses" [value]="g">{{g}}</option>
-        </select>
+        <ng-template #showDropdownFilters>
+            <select
+                [value]="searchQuery"
+                [(ngModel)]="searchQuery"
+                name="dropdown-filter"
+            >
+                <option *ngFor="let val of dropdownFilters.get(selectedFilterType)">
+                    {{ val }}
+                </option>
+            </select>
+        </ng-template>
 
         <button
             (click)="searchCocktails(selectedFilterType, searchQuery)"
             class="btn btn-secondary"
         >
-            Search by {{ CocktailSearchType[selectedFilterType] }}
+            Search
         </button>
 
-        <div
-            class="d-flex flex-row justify-content-around flex-wrap"
-        >
+        <div class="d-flex flex-row justify-content-around flex-wrap" >
             <span
                 *ngFor="let c of letters"
                 class="letter-filter mx-2"
@@ -93,13 +63,5 @@
         </div>
     </form>
 
-    <div class="
-        random-cocktails
-        d-flex flex-wrap justify-content-md-center justify-content-around
-        gap-2
-    "
-    >
-        <app-cocktail-card *ngFor="let cocktail of cocktails" [cocktail]="cocktail" />
-    </div>
-
+    <app-cocktail-card-list [cocktails]="cocktails" />
 </main>
