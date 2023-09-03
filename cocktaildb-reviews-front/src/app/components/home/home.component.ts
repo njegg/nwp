@@ -90,7 +90,7 @@ export class HomeComponent implements OnInit {
         });
     }
 
-    reset() {
+    resetSearchQuery() {
         this.searchQuery = "";
     }
 }
