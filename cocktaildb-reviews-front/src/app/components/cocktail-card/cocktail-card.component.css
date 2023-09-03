@@ -1,9 +1,15 @@
 .card {
     width: 12rem;
-    /* height: 12rem; */
+    height: 16.2rem;
+    background-color: var(--rp-highlight-med);
+    color: var(--rp-rose);
 }
 
 img, .card {
     border-radius: 5%;
 }
 
+.cocktail-name {
+    font-size: 1.1rem;
+    font-weight: 500;
+}

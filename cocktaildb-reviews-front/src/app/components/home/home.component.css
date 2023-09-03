@@ -5,10 +5,28 @@ h1 {
 .letter-filter {
     font-size: 1.3rem;
     cursor: pointer;
+    color: var(--rp-pine);
 }
 
 .filter-type-radio:checked + .filter-type-label {
-    color: rgb(72, 72, 192);
+    color: var(--rp-pine)
+}
+
+.filter-type-radio:checked + .filter-type-label:hover {
+    text-shadow: none;
+    cursor: default;
+}
+
+.filter-type-radio {
+    width: 0;
+    height: 0;
+}
+
+.letter-filter:hover,
+.filter-type-label:hover {
+    color: var(--rp-foam);
+    cursor: pointer;
+    text-shadow: 0 0 0.5rem var(--rp-foam);
 }
 
 .filter-type-label {
@@ -17,4 +35,35 @@ h1 {
 
 .sticky-top {
     top: 0.5rem;
+}
+
+.search-button {
+    background-color: var(--rp-rose);
+    color: var(--rp-base);
+    outline: none;
+    border: none;
+}
+
+.search-button:hover {
+    background-color: var(--rp-love);
+    box-shadow: 0 0 0.5rem var(--rp-love);
+}
+
+form {
+    background-color: var(--rp-overlay);
+    border: 1px solid var(--rp-highlight-high);
+    top: -1px;
+}
+
+input, select, option {
+    background-color: var(--rp-highlight-med);
+    color: var(--rp-rose);
+    outline: none;
+    border: none;
+    height: 2rem;
+    width: 20rem;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.2rem;
 }

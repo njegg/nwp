@@ -1,19 +1,23 @@
-<h1 class="w-100 text-center">Home</h1>
+<h1 class="w-100 text-center">🍹👏 Cock Review 👏🍹</h1>
 <h2 class="w-100 text-center">Random cocktails</h2>
 
+<div class="text-center">---</div>
 <app-cocktail-card-list [cocktails]="randomCocktails" />
 
 <hr>
 
 <h3 class="w-100 text-center">Search Cocktails</h3>
 
-<form name="searchForm" class="border p-1 sticky-top bg-body rounded p-2 my-2">
+<form
+    name="searchForm"
+    class="sticky-top rounded p-2 my-4"
+    #form
+>
 
     <!-- Radio input for selecting the filter type -->
     <div class="d-flex justify-content-center gap-3 flex-wrap mb-2">
         <div
             *ngFor="let filterType of filterTypes; let i = index"
-            (click)="resetSearchQuery()"
         >
             <input
                 class="position-fixed opacity-0 filter-type-radio"
@@ -22,7 +26,7 @@
                 name="filter-type-{{i}}"
                 [value]="filterType"
                 [(ngModel)]="selectedFilterType"
-            >
+            />
             <label
                 for="filter-type-{{i}}"
                 class="filter-type-label"
@@ -36,7 +40,7 @@
         <!-- Search by name -->
         <input
             *ngIf="selectedFilterType == CocktailSearchType.Name; else showDropdownFilters"
-            class="form-control text-center"
+            class="text-center"
             type="text"
             id="search-by-name-input"
             name="fitler-name"
@@ -51,7 +55,8 @@
                 [(ngModel)]="searchQuery"
                 name="filter-dropdown"
             >
-                <option *ngFor="let val of dropdownFilters.get(selectedFilterType)" selected>
+                <option></option>
+                <option *ngFor="let val of dropdownFilters.get(selectedFilterType)">
                     {{ val }}
                 </option>
             </select>
@@ -59,18 +64,18 @@
 
         <button
             (click)="searchCocktails(selectedFilterType, searchQuery)"
-            class="btn btn-secondary"
+            class="btn btn-secondary search-button"
         >
             Search
         </button>
     </div>
 
     <!-- Search by first letter -->
-    <div class="d-flex flex-row justify-content-around flex-wrap" >
+    <div class="letter-filter-container d-flex overflow-x-scroll" >
         <span
             *ngFor="let c of letters"
             class="letter-filter mx-2"
-            (click)="searchCocktails(CocktailSearchType.FirstLetter, c)"
+            (click)="searchByFirstLetter(c, form)"
         >
             {{ c }}
         </span>

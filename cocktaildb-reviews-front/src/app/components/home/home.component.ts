@@ -1,15 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { range } from 'rxjs';
 import { Cocktail } from 'src/app/model/cocktail';
-import { AttributeType } from 'src/app/model/cocktail_attributes';
 import { CocktailService } from 'src/app/services/cocktail.service';
 import { CocktailSearchType } from 'src/app/types/cocktail_search_type';
 import { match } from 'src/app/types/functional_types/match';
-
-
-enum FilterType {
-    Name, Ingredent, Category, Alcoholic, Glass
-}
 
 
 @Component({
@@ -20,6 +15,7 @@ enum FilterType {
 export class HomeComponent implements OnInit {
     constructor(
         private cocktailService: CocktailService,
+        private router: Router,
     ) { }
 
     CocktailSearchType = CocktailSearchType;
@@ -33,7 +29,12 @@ export class HomeComponent implements OnInit {
     glasses: string[] = [];
     alchocolicTypes: string[] = [];
 
-    letters: string[] = Array(26).fill('').map((_, i) => String.fromCharCode("A".charCodeAt(0) + i));
+    /**
+     * Generated letters A-Z
+     */
+    letters: string[] = Array(26)
+        .fill('')
+        .map((_, i) => String.fromCharCode("A".charCodeAt(0) + i));
 
     /**
      * Used for selecting the filter method
@@ -56,7 +57,7 @@ export class HomeComponent implements OnInit {
     searchQuery: string = "";
 
     ngOnInit(): void {
-        range(0).forEach(() => 
+        range(3).forEach(() => 
             this.cocktailService.getRandomCocktail()
                 .subscribe({
                     next: cocktail => this.randomCocktails.push(cocktail),
@@ -80,12 +81,11 @@ export class HomeComponent implements OnInit {
                 })
         }
 
-
-        this.cocktails = JSON.parse(localStorage.getItem('loaded cocktails') || '[]');
+        this.loadCocktailsFromLocalStorage();
     }
 
     ngOnDestroy() {
-        localStorage.setItem('loaded cocktails',  JSON.stringify(this.cocktails));
+        this.saveCocktailsToLocalStorage();
     }
 
     searchCocktails(type: CocktailSearchType, query: string): void {
@@ -93,14 +93,30 @@ export class HomeComponent implements OnInit {
 
         match(this.cocktailService.searchBy(type, query), {
             Ok: res => res.subscribe({
-                next: res => this.cocktails = res,
+                next: res => {
+                    this.cocktails = res
+                    this.saveCocktailsToLocalStorage();
+                },
                 error: err => console.error(err.message),
             }),
             Err: err => console.error(err.message),
         });
     }
 
+    searchByFirstLetter(letter: string, form: HTMLElement) {
+        this.searchCocktails(CocktailSearchType.FirstLetter, letter);
+        this.resetSearchQuery();
+    }
+
     resetSearchQuery() {
         this.searchQuery = "";
+    }
+
+    private saveCocktailsToLocalStorage() {
+        localStorage.setItem('loaded cocktails',  JSON.stringify(this.cocktails));
+    }
+
+    private loadCocktailsFromLocalStorage() {
+        this.cocktails = JSON.parse(localStorage.getItem('loaded cocktails') || '[]');
     }
 }
