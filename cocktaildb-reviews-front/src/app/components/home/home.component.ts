@@ -56,6 +56,7 @@ export class HomeComponent implements OnInit {
 
     searchQuery: string = "";
 
+    
     ngOnInit(): void {
         range(3).forEach(() => 
             this.cocktailService.getRandomCocktail()
