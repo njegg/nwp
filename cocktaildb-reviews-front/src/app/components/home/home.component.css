@@ -69,7 +69,6 @@ input, select, option {
 }
 
 #haha-url {
-    text-decoration: none;
     color: var(--rp-love);
     font-weight: bolder;
 }
