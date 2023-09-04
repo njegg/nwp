@@ -82,6 +82,11 @@ export class HomeComponent implements OnInit {
         }
 
         this.loadCocktailsFromLocalStorage();
+
+        if (this.cocktails.length == 0) {
+            let randomLetter = this.letters[(Math.random() * this.letters.length) | 0];
+            this.searchByFirstLetter(randomLetter);
+        }
     }
 
     ngOnDestroy() {
@@ -103,7 +108,7 @@ export class HomeComponent implements OnInit {
         });
     }
 
-    searchByFirstLetter(letter: string, form: HTMLElement) {
+    searchByFirstLetter(letter: string) {
         this.searchCocktails(CocktailSearchType.FirstLetter, letter);
         this.resetSearchQuery();
     }

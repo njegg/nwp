@@ -1,8 +1,16 @@
 <h1 class="w-100 text-center">🍹👏 Cock Review 👏🍹</h1>
 <h2 class="w-100 text-center">Random cocktails</h2>
 
-<div class="text-center">---</div>
-<app-cocktail-card-list [cocktails]="randomCocktails" />
+<h5 class="text-center w-100">
+    Available in the 
+    <a
+        href="https://myshop.rocks/giveaways/free-cock-battlepass"
+        id="haha-url"
+    >
+        FREE COCK BATTLE PASS
+    </a>
+</h5>
+<!-- <app-cocktail-card-list [cocktails]="randomCocktails" /> -->
 
 <hr>
 
@@ -30,6 +38,7 @@
             <label
                 for="filter-type-{{i}}"
                 class="filter-type-label"
+                (click)="resetSearchQuery()"
             >
                 {{ CocktailSearchType[filterType] }}
             </label>
@@ -75,7 +84,7 @@
         <span
             *ngFor="let c of letters"
             class="letter-filter mx-2"
-            (click)="searchByFirstLetter(c, form)"
+            (click)="searchByFirstLetter(c)"
         >
             {{ c }}
         </span>

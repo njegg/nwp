@@ -67,3 +67,9 @@ input, select, option {
     font-weight: bold;
     font-size: 1.2rem;
 }
+
+#haha-url {
+    text-decoration: none;
+    color: var(--rp-love);
+    font-weight: bolder;
+}
