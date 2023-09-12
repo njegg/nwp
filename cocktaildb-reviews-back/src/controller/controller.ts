@@ -24,7 +24,9 @@ export abstract class Controller {
         }
     }
 
-    map(path: string, method: string, req: Request): Promise<Response> {
+    map(path: string, req: Request): Promise<Response> {
+        let method = req.method;
+
         let requestString = this.formatRequest(method, path);
         let endpointPath = this.endpointPaths.find(x => requestString.match(x[0]));
 

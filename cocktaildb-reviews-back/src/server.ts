@@ -4,11 +4,13 @@ import { RequestError } from "./error";
 Bun.serve({
     port: 8080,
     hostname: "localhost",
+
     async fetch(req) {
         console.log(`${new Date().toISOString()}: ${req.method} ${req.url}`)
 
         return mapRequest(req);
     },
+
     error(error) {
         let responseBody = error instanceof RequestError ?
             error : { message: "Internal server error :(", code: 500 };
@@ -26,11 +28,8 @@ async function mapRequest(req: Request): Promise<Response> {
     let path = new URL(req.url).pathname;
 
     if (path.startsWith(reviewController.mapping)) {
-        return reviewController.map(
-            path.substring(reviewController.mapping.length),
-            req.method,
-            req
-        )
+        path = path.substring(reviewController.mapping.length);
+        return reviewController.map(path, req);
     }
 
     if (path === "/die") throw new Error("rip"); // error test
