@@ -16,12 +16,14 @@ export abstract class Controller {
         let req = this.formatRequest(method, path);
 
         if (req.indexOf("{")) {
-            let reg = new RegExp(`^${req.replaceAll(/{(.*?)}/g, "(?<$1>[^/]*?)")}/?$`, "g");
+            let reg = new RegExp(`^${req.replaceAll(/{(.*?)}/g, "(?<$1>[^/]*?)")}$`, "g");
             this.endpointPaths.push([reg, endpoint, true])
         } else {
             let reg = new RegExp(`^${req}/?$`, "g");
             this.endpointPaths.push([reg, endpoint, false])
         }
+
+        console.log(`registered a path: ${req}`);
     }
 
     map(path: string, req: Request): Promise<Response> {
