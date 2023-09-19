@@ -23,7 +23,7 @@ export abstract class Controller {
             this.endpointPaths.push([reg, endpoint, false])
         }
 
-        console.log(`registered a path: ${req}`);
+        console.log(`${method} ${this.mapping}${path}`);
     }
 
     map(path: string, req: Request): Promise<Response> {

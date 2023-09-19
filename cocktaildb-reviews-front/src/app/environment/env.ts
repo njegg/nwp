@@ -1,3 +1,4 @@
 export const env = {
-    api: "https://www.thecocktaildb.com/api/json/v1/1"
+    api_cocktail: "https://www.thecocktaildb.com/api/json/v1/1",
+    api_reviews: "http://localhost:8080"
 }

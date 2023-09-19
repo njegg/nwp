@@ -1,17 +1,12 @@
-<h1 class="w-100 text-center">🍹👏 Cock Review 👏🍹</h1>
+<h5 class="text-center w-75 mx-auto">
+    Welcome, here you can search and review cocktails from the free <a href="https://www.thecocktaildb.com/api.php">TheCocktailDB API</a>
+</h5>
+
+<hr>
+
 <h2 class="w-100 text-center">Random cocktails</h2>
 
-<h5 class="text-center w-100">
-    Available in the 
-    <a
-        href="https://myshop.rocks/giveaways/free-cock-battlepass"
-        target="_blank"
-        id="haha-url"
-    >
-        FREE COCK BATTLE PASS
-    </a>
-</h5>
-<!-- <app-cocktail-card-list [cocktails]="randomCocktails" /> -->
+<app-cocktail-card-list [cocktails]="randomCocktails" />
 
 <hr>
 
@@ -74,7 +69,7 @@
 
         <button
             (click)="searchCocktails(selectedFilterType, searchQuery)"
-            class="btn btn-secondary search-button"
+            class="search-button"
         >
             Search
         </button>

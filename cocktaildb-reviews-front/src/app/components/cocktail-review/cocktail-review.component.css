@@ -1,0 +1,34 @@
+.review {
+    background-color: var(--rp-overlay);
+    border-radius: 10px;
+}
+
+.vote-button {
+    background: transparent;
+    outline: none;
+    border: none;
+    font-size: 1.5rem;
+    padding: 0;
+    margin: 0;
+}
+
+.vote-button:hover {
+    box-shadow: none;
+}
+
+.voted {
+    color: var(--rp-love);
+}
+
+.voted:hover {
+	text-shadow: 0 0 0.4rem var(--rp-love);
+}
+
+.not-voted {
+    color: var(rgb(82, 82, 82));
+}
+
+.not-voted:hover {
+    color: rgb(113, 53, 70);
+	text-shadow: 0 0 0.4rem rgb(113, 53, 70);
+}

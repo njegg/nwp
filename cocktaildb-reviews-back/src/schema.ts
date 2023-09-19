@@ -10,10 +10,12 @@ const reviewSchema = new mongoose.Schema({
         max: [10, "Rating must be between 1 and 10, got {VALUE}"],
         required: true,
     },
+    upvotes: { type: Number, default: 0 },
 });
 
 export type Review = mongoose.InferSchemaType<typeof reviewSchema>;
 export const Review = mongoose.model('reviews', reviewSchema);
+
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -28,4 +30,15 @@ const userSchema = new mongoose.Schema({
 
 export type User = mongoose.InferSchemaType<typeof userSchema>;
 export const User = mongoose.model('users', userSchema);
+
+
+const voteSchema = new mongoose.Schema({
+    username: { type: String, required: true },
+    review_id: { type: String, required: true },
+    cocktail_id: { type: Number, required: true },
+    amount: { type: Number, required: true, enum: [1, -1, 0] },
+});
+
+export type ReviewVote = mongoose.InferSchemaType<typeof voteSchema>;
+export const ReviewVote = mongoose.model('votes', voteSchema);
 

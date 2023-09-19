@@ -7,7 +7,7 @@ import { Cocktail } from 'src/app/model/cocktail';
     styleUrls: ['./cocktail-card.component.css']
 })
 export class CocktailCardComponent implements OnInit {
-    @Input() cocktail!: Cocktail;
+    @Input() cocktail: Cocktail | undefined;
 
     cardWidth = 600;
     cardHeight = 200;
@@ -15,9 +15,9 @@ export class CocktailCardComponent implements OnInit {
 
     src: string = `https://placehold.co/${this.cardHeight}x${this.imageWidth}`;
 
-
     ngOnInit(): void {
-        this.src = this.cocktail.imageSource || this.src;
+        if (this.cocktail) {
+            this.src = this.cocktail.imageSource || this.src;
+        }
     }
-
 }

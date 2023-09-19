@@ -27,12 +27,12 @@ export class CocktailDetailsComponent implements OnInit {
                     Ok: cocktail => this.cocktail = cocktail,
                     Err: err => {
                         this.router.navigate(['']);
-                        console.error(err);
+                        throw err;
                     },
                 }),
                 error: err => {
-                    console.error(err);
                     this.router.navigate(['']);
+                    throw err;
                 }
             })
         }

@@ -1,0 +1,34 @@
+<div
+    class="review d-flex flex-row my-3 mx-2 p-3"
+>
+    <div
+        class="d-flex flex-column me-3"
+    >
+        <button
+            [ngClass]="reviewAndVote.vote == Vote.UP ? 'voted' : 'not-voted'"
+            class="vote-button"
+            (click)="voteReview(Vote.UP)"
+        >
+            ▲
+        </button>
+
+        <span class="align-self-center"> {{ reviewAndVote.review.upvotes }} </span>
+
+        <button
+            [ngClass]="reviewAndVote.vote == Vote.DOWN ? 'voted' : 'not-voted'"
+            class="vote-button"
+            (click)="voteReview(Vote.DOWN)" >
+            ▼
+        </button>
+    </div>
+
+    <div>
+        <h5 class="fw-bold">
+            {{ reviewAndVote.review.reviewerName }}
+        </h5>
+        <br>
+        {{ reviewAndVote.review.content }}
+
+        {{ reviewAndVote.vote }}
+    </div>
+</div>

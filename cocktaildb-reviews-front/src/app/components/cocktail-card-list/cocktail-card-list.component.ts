@@ -7,5 +7,5 @@ import { Cocktail } from 'src/app/model/cocktail';
   styleUrls: ['./cocktail-card-list.component.css']
 })
 export class CocktailCardListComponent {
-  @Input() cocktails: Cocktail[] = [];
+  @Input() cocktails: Array<Cocktail | undefined> = [];
 }

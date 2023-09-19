@@ -1,0 +1,15 @@
+input {
+    background-color: var(--rp-highlight-med);
+    color: var(--rp-rose);
+    outline: none;
+    border: none;
+    height: 2rem;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+button, input {
+    width: 20rem;
+    border-radius: 10px;
+}

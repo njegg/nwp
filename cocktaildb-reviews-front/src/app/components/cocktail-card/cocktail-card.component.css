@@ -9,7 +9,15 @@ img, .card {
     border-radius: 5%;
 }
 
+a:hover {
+    text-shadow: 0 0 0.4rem var(--rp-rose);
+}
+
 .cocktail-name {
     font-size: 1.1rem;
     font-weight: 500;
+}
+
+.image-placeholder {
+    height: 190px;
 }

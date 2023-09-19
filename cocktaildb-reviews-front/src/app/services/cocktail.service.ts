@@ -8,6 +8,7 @@ import { CocktailSearchType } from '../types/cocktail_search_type';
 import { AttributeListResponse, AttributeType } from '../model/cocktail_attributes';
 import { Result } from '../types/functional_types/result';
 import Ok from '../types/functional_types/ok';
+import { getJsonBodyOptions } from './options';
 
 @Injectable({
     providedIn: 'root'
@@ -16,28 +17,17 @@ export class CocktailService {
 
     constructor(private http: HttpClient) { }
 
-    api = env.api;
-
-    getJsonBodyOptions: {
-        headers?: HttpHeaders | { [header: string]: string | string[]; };
-        context?: HttpContext;
-        observe?: 'body';
-        params?: HttpParams | { [param: string]: string | number | boolean | ReadonlyArray<string | number | boolean>; };
-        reportProgress?: boolean;
-        responseType?: 'json';
-        withCredentials?: boolean;
-    } = { observe: 'body', responseType: 'json' }
-
+    api = env.api_cocktail;
 
     getRandomCocktail(): Observable<Cocktail> {
         return this.http
-            .get<CocktailListResponse>(`${this.api}/random.php`, this.getJsonBodyOptions)
+            .get<CocktailListResponse>(`${this.api}/random.php`, getJsonBodyOptions)
             .pipe(map(this.getFirstCocktail));
     }
 
     getCocktailById(id: number): Observable<Result<Cocktail>> {
         return this.http
-            .get<CocktailListResponse>(`${this.api}/lookup.php?i=${id}`, this.getJsonBodyOptions)
+            .get<CocktailListResponse>(`${this.api}/lookup.php?i=${id}`, getJsonBodyOptions)
             .pipe(map(res => {
                 return res.drinks ?
                     Ok(this.getFirstCocktail(res)) :
@@ -68,7 +58,7 @@ export class CocktailService {
         let urlLetter = CocktailSearchType.getAttributeUrlLetter(searchType);
 
         return this.http
-            .get<AttributeListResponse>(`${env.api}/list.php?${urlLetter}=list`, this.getJsonBodyOptions)
+            .get<AttributeListResponse>(`${env.api_cocktail}/list.php?${urlLetter}=list`, getJsonBodyOptions)
             .pipe(map(res =>
                 res.drinks ?
                     Ok(res.drinks.map(v => Object.values(v)[0])) :
@@ -83,7 +73,7 @@ export class CocktailService {
 
         return Ok(
             this.http
-                .get<CocktailListResponse>(`${this.api}/search.php?s=${name}`, this.getJsonBodyOptions)
+                .get<CocktailListResponse>(`${this.api}/search.php?s=${name}`, getJsonBodyOptions)
                 .pipe(map(cocktailListResponseToCocktailList))
         );
     }
@@ -95,7 +85,7 @@ export class CocktailService {
 
         return Ok(
             this.http
-                .get<CocktailListResponse>(`${this.api}/search.php?f=${letter}`, this.getJsonBodyOptions)
+                .get<CocktailListResponse>(`${this.api}/search.php?f=${letter}`, getJsonBodyOptions)
                 .pipe(map(cocktailListResponseToCocktailList))
         );
     }
@@ -103,7 +93,7 @@ export class CocktailService {
     private searchByAttribute(attributeType: AttributeType, query: string): Result<Observable<Cocktail[]>> {
         return Ok(
             this.http
-                .get<CocktailListResponse>(`${this.api}/filter.php?${attributeType}=${query}`, this.getJsonBodyOptions)
+                .get<CocktailListResponse>(`${this.api}/filter.php?${attributeType}=${query}`, getJsonBodyOptions)
                 .pipe(map(cocktailListResponseToCocktailList))
         );
     }

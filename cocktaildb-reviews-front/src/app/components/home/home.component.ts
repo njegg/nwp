@@ -21,8 +21,10 @@ export class HomeComponent implements OnInit {
     CocktailSearchType = CocktailSearchType;
     Array = Array;
 
-    randomCocktails: Cocktail[] = []
-    cocktails: Cocktail[] = [];
+    loadingCocktails = Array(6).fill(undefined);
+    cocktails: Cocktail[] = this.loadingCocktails;
+    randomCocktailCount = 3;
+    randomCocktails: Cocktail[] = Array(this.randomCocktailCount).fill(undefined);
 
     ingredients: string[] = [];
     categories: string[] = [];
@@ -58,10 +60,12 @@ export class HomeComponent implements OnInit {
 
     
     ngOnInit(): void {
-        range(3).forEach(() => 
+        let randomCocktailCount = this.randomCocktailCount - +(Math.random() < 0.5);
+
+        range(randomCocktailCount).forEach((i) => 
             this.cocktailService.getRandomCocktail()
                 .subscribe({
-                    next: cocktail => this.randomCocktails.push(cocktail),
+                    next: cocktail => this.randomCocktails[i] = cocktail,
                     error: err => console.error(err)
                 })
         );
@@ -97,16 +101,20 @@ export class HomeComponent implements OnInit {
     searchCocktails(type: CocktailSearchType, query: string): void {
         if (!query) return;
 
-        match(this.cocktailService.searchBy(type, query), {
-            Ok: res => res.subscribe({
-                next: res => {
-                    this.cocktails = res
-                    this.saveCocktailsToLocalStorage();
-                },
-                error: err => console.error(err.message),
-            }),
-            Err: err => console.error(err.message),
-        });
+        this.cocktails = this.loadingCocktails;
+
+        match(
+            this.cocktailService.searchBy(type, query), {
+                Ok: res => res.subscribe({
+                    next: res => {
+                        this.cocktails = res
+                        this.saveCocktailsToLocalStorage();
+                    },
+                    error: err => console.error(err.message),
+                }),
+                Err: err => console.error(err.message),
+            }
+        );
     }
 
     searchByFirstLetter(letter: string) {

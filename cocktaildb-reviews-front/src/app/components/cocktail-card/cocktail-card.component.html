@@ -1,18 +1,31 @@
 <a
+    *ngIf="cocktail != undefined; else loading"
     routerLink="cocktail/{{cocktail.id}}"
-    class="card text-decoration-none"
+    class="card text-decoration-none d-flex flex-column"
 >
-    <img
-        class="w-100"
-        [src]="src"
-        [alt]="'image of ' + cocktail.name"
-    >
+    <div class="image-placeholder">
+        <img
+            class="w-100"
+            [src]="src"
+            [alt]="'image of ' + cocktail.name"
+        >
+    </div>
+
     <div class="
-            cocktail-name
-            d-flex text-center justify-content-center align-items-center
-            h-100 text-decoration-none
+            text-center mx-auto flex-grow-1 d-flex align-items-center
+            fw-bold cocktail-name text-decoration-none
         "
     >
-        <span class="card-title">{{ cocktail.name }}</span>
+        {{ cocktail.name }}
     </div>
 </a>
+
+<ng-template #loading>
+    <span
+        class="card placeholder-glow d-flex flex-column"
+    >
+        <div class="image-placeholder w-100 d-inline-block mb-1 placeholder rounded"></div>
+        <span class="placeholder col-7 align-self-center my-2 rounded mx-2"></span>
+        <span class="placeholder col-4 mx-2 align-self-center rounded"></span>
+    </span>
+</ng-template>

@@ -7,4 +7,8 @@
     >
 
     {{ cocktail.name }}
+
+    <h3>User reviews</h3>
+    <hr>
+    <app-cocktail-review-list [cocktailId]="cocktail.id" />
 </div>

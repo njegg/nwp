@@ -1,0 +1,8 @@
+.nav-bar {
+    border: 1px solid var(--rp-rose);
+    border-top: 0;
+    border-radius: 0 0 0.5rem 0.5rem;
+    background-color: var(--rp-surface);
+    max-width: 800px;
+    margin: auto
+}

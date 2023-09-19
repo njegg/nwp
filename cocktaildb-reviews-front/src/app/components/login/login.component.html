@@ -1,0 +1,13 @@
+
+<h1 class="text-center">Log in</h1>
+<hr>
+
+<form
+    [formGroup]="loginForm"
+    class="d-flex mt-5 gap-2 align-items-center justify-content-center flex-column"
+>
+    <input type="text" formControlName="username">
+    <input type="password" formControlName="password">
+
+    <button (click)="login()">Log in</button>
+</form>

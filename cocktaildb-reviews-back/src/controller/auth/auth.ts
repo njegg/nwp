@@ -11,6 +11,37 @@ if (TOKEN_KEY == "") {
 }
 
 
+export function authorize(req: Request): string {
+    const token = getTokenFromRequest(req);
+
+    if (!token) {
+        throw new RequestError(
+            "You need to login to do that",
+            StatusCodes.UNAUTHORIZED
+        );
+    }
+
+    verify(token, TOKEN_KEY); // Throws
+
+    return getUsernameFromToken(token);
+}
+
+export function getTokenFromRequest(req: Request): string | undefined {
+    let token = req.headers.get("authorization");
+
+    return !token || !(token = token.split("Bearer ")[1]) ?
+        undefined : token;
+}
+
+export function getUsernameFromRequest(req: Request): string | undefined {
+  let token = getTokenFromRequest(req);
+  return token ? getUsernameFromToken(token) : undefined;
+}
+
+export function getUsernameFromToken(token: string): string  {
+    return (decode(token) as any).username;
+}
+
 export function Authorize(
     _target: Object,
     _propertyKey: string,
@@ -26,19 +57,3 @@ export function Authorize(
 
     return descriptor;
 }
-
-export function authorize(req: Request): string {
-    let token = req.headers.get("authorization");
-
-    if (!token || !(token = token.split("Bearer ")[1])) {
-        throw new RequestError(
-            "You need to login to do that",
-            StatusCodes.UNAUTHORIZED
-        );
-    }
-
-    verify(token, TOKEN_KEY); // Throws
-
-    return (decode(token) as any).username;
-}
-

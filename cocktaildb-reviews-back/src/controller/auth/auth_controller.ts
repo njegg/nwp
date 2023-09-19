@@ -5,7 +5,7 @@ import { User } from "../../schema";
 import { Controller } from "../controller";
 import { mongooseToRequestError } from "../mongoose_error";
 import { sign } from "jsonwebtoken";
-import { Authorize, TOKEN_KEY } from "./auth";
+import { TOKEN_KEY, getUsernameFromRequest } from "./auth";
 
 
 export class AuthController extends Controller {
@@ -14,7 +14,7 @@ export class AuthController extends Controller {
 
         this.addPath("POST", "/register", this.register);
         this.addPath("POST", "/login", this.login);
-        this.addPath("GET", "", this.isAuthorised);
+        this.addPath("GET", "", this.getUsername);
     }
 
     async register(req: Request): Promise<Response> {
@@ -62,12 +62,11 @@ export class AuthController extends Controller {
             { expiresIn: "1d"}
         );
 
-        return new Response(token);
+        return new Response(JSON.stringify(token));
     }
 
-    @Authorize
-    async isAuthorised(_: Request): Promise<Response> {
-        return new Response();
+    async getUsername(req: Request): Promise<Response> {
+        return new Response(JSON.stringify(getUsernameFromRequest(req)));
     }
 }
 
