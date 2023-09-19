@@ -7,4 +7,10 @@ import { Component, Input } from '@angular/core';
 })
 export class ApiUnavailableComponent {
     @Input() isLoading = true;
+
+    showRickRoll = false;
+
+    roll() {
+        this.showRickRoll = true;
+    }
 }

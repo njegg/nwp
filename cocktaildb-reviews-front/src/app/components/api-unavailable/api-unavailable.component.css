@@ -1,6 +1,7 @@
 
 #message-container {
     height: 100vh;
+    transition: 300ms;
     width: 100vw;
 }
 
@@ -10,4 +11,10 @@
     background-color: var(--rp-surface);
     border: 2px solid var(--rp-rose);
     box-shadow: 0 0 10px var(--rp-rose);
+    transition: 300ms;
+}
+
+.big {
+    width: 400px;
+    height: 400px !important;
 }

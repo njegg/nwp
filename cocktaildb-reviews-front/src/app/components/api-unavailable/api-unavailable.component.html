@@ -4,8 +4,16 @@
 >
     <div
         id="message"
-        class="rounded-3 d-flex justify-content-center align-items-center p-3 p-md-5 m-1"
+        class="rounded-3 d-flex gap-0 justify-content-center align-items-center m-1"
+        [class.p-3]="!showRickRoll"
+        [class.p-md-5]="!showRickRoll"
+        [class.big]="showRickRoll"
     >
-        <h3>API ded, <a href="">try again</a> later</h3>
+        <h3 *ngIf="!showRickRoll">API ded, <a href="#" (click)="roll()">try again?</a></h3>
+            <img
+                class="w-100 h-100 rounded-2"
+                *ngIf="showRickRoll"
+                src="https://media.tenor.com/fhO9ZvaVfwAAAAAC/rickroll.gif"
+            >
     </div>
 </div>
