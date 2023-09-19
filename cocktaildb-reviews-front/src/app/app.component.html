@@ -1,4 +1,4 @@
-<ng-container *ngIf="apiState == true; else apiUnavailable">
+<ng-container *ngIf="apiState == true">
     <nav class="w-100">
         <app-navbar></app-navbar>
     </nav>
@@ -7,6 +7,6 @@
     </main>
 </ng-container>
 
-<ng-template #apiUnavailable>
-    <app-api-unavailable [isLoading]="apiState == 'loading'" ></app-api-unavailable>
-</ng-template>
+<ng-container *ngIf="apiState == false">
+    <app-api-unavailable ></app-api-unavailable>
+</ng-container>

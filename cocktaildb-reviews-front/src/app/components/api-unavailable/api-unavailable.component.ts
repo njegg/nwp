@@ -6,8 +6,6 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./api-unavailable.component.css']
 })
 export class ApiUnavailableComponent {
-    @Input() isLoading = true;
-
     showRickRoll = false;
 
     roll() {
