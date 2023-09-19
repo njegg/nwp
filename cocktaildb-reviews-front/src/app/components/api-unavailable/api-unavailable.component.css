@@ -1,0 +1,13 @@
+
+#message-container {
+    height: 100vh;
+    width: 100vw;
+}
+
+#message {
+    max-width: 700px;
+    height: 120px;
+    background-color: var(--rp-surface);
+    border: 2px solid var(--rp-rose);
+    box-shadow: 0 0 10px var(--rp-rose);
+}

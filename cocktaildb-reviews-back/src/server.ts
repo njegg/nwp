@@ -5,12 +5,16 @@ import { ReviewController } from "./controller/reviews_controller";
 import { AuthController } from "./controller/auth/auth_controller";
 import { JsonWebTokenError } from "jsonwebtoken";
 import { StatusCodes } from "http-status-codes";
+import { PingController } from "./controller/ping_controller";
 
 
 mongoose.connect('mongodb://127.0.0.1:27017/nwp');
 
-const reviewController = new ReviewController("/reviews");
-const authController = new AuthController("/auth");
+const controllers = [
+    new ReviewController("/reviews"),
+    new AuthController("/auth"),
+    new PingController("/ping"),
+]
 
 Bun.serve({
     port: 8080,
@@ -28,17 +32,13 @@ Bun.serve({
         }
 
         let res: Response | undefined = undefined;
-
         let path = new URL(req.url).pathname;
 
-        if (path.startsWith(reviewController.mapping)) {
-            path = path.substring(reviewController.mapping.length);
-            res = await reviewController.map(path, req);
-        }
-
-        if (path.startsWith(authController.mapping)) {
-            path = path.substring(authController.mapping.length);
-            res = await authController.map(path, req);
+        for (let controller of controllers) {
+            if (path.startsWith(controller.mapping)) {
+                path = path.substring(controller.mapping.length);
+                res = await controller.map(path, req);
+            }
         }
 
         if (res) {

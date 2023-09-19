@@ -18,6 +18,7 @@ import { LoginButtonComponent } from './components/login-button/login-button.com
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GlobalErrorHandler } from './errors/error_handler';
+import { ApiUnavailableComponent } from './components/api-unavailable/api-unavailable.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { GlobalErrorHandler } from './errors/error_handler';
     LoginComponent,
     NavbarComponent,
     LoginButtonComponent,
+    ApiUnavailableComponent,
   ],
   imports: [
     BrowserAnimationsModule,

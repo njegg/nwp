@@ -32,7 +32,7 @@ export class GlobalErrorHandler extends ErrorHandler {
                 ).onTap.subscribe(_ => this.router.navigate(['/login'], { queryParams: { returnUrl: this.location.path() } }))
             } else {
                 this.toastrService.error(
-                    error.error.message,
+                    "Something went wrong",
                     undefined,
                     { onActivateTick: true, closeButton: true }
                 );
