@@ -15,7 +15,9 @@ export class AppComponent implements OnInit {
     ngOnInit(): void {
         this.pingService.ping().subscribe({
             next:  _ => this.apiState = true,
-            error: _ => this.apiState = false,
+            error: err => {
+                this.apiState = false; console.log(err);
+            }
         })
     }
     

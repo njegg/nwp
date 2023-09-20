@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import { env } from '../environment/env';
+import { commonRequestOptions } from '../request_options';
 
 const api = env.api_reviews;
 
@@ -20,15 +21,13 @@ export class AuthService {
     }
 
     login(username: string, password: string): Observable<string> {
-        return this.http.post<string>(`${api}/auth/login`, { username, password }, {
-            observe: "body",
-            responseType: "json",
-        }).pipe(map(token => {
-            localStorage.setItem("token", token);
-            this.updateUsername();
+        return this.http.post<string>(`${api}/auth/login`, { username, password }, commonRequestOptions())
+            .pipe(map(token => {
+                localStorage.setItem("token", token);
+                this.updateUsername();
 
-            return token;
-        }));
+                return token;
+            }));
     }
 
     logout() {
@@ -41,11 +40,7 @@ export class AuthService {
     }
 
     updateUsername() {
-        return this.http.get<string | undefined>(`${api}/auth`, {
-            observe: "body",
-            responseType: "json",
-            headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
-        })
+        return this.http.get<string | undefined>(`${api}/auth`, commonRequestOptions())
         .subscribe(res => this.usernameBS.next(res))
     }
 }

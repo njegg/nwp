@@ -8,7 +8,9 @@ import { StatusCodes } from "http-status-codes";
 import { PingController } from "./controller/ping_controller";
 
 
-mongoose.connect('mongodb://127.0.0.1:27017/nwp');
+mongoose.connect('mongodb://127.0.0.1:27017/nwp')
+    .then(_ => console.log("Connected to DB"))
+    .catch(err => {console.error("Failed to connect to DB:"); console.error(err); })
 
 const controllers = [
     new ReviewController("/reviews"),
