@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { env } from '../environment/env';
 import { ReviewAndVote, Vote } from '../model/review';
 import { Observable } from 'rxjs';
+import { commonRequestOptions } from '../request_options';
 
 let api = env.api_reviews;
 
@@ -15,15 +16,11 @@ export class ReviewsService {
 
     getReviews(cocktailId: number): Observable<ReviewAndVote[]> {
         return this.http
-            .get<ReviewAndVote[]>(`${api}/reviews/${cocktailId}`, {
-                headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
-            });
+            .get<ReviewAndVote[]>(`${api}/reviews/${cocktailId}`, commonRequestOptions());
     }
 
     voteReview(reviewId: string, vote: Vote): Observable<ReviewAndVote> {
         return this.http
-            .post<ReviewAndVote>(`${api}/reviews/${reviewId}/${Vote.toString(vote)}`, {}, {
-                headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
-            })
+            .post<ReviewAndVote>(`${api}/reviews/${reviewId}/${Vote.toString(vote)}`, {}, commonRequestOptions());
     }
 }
