@@ -46,8 +46,7 @@
                   "maximumError": "4kb"
                 }
               ],
-              "outputHashing": "all",
-              "baseHref": "https://njegg.github.io/nwp/"
+              "outputHashing": "all"
             },
             "development": {
               "buildOptimizer": false,
