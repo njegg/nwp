@@ -11,7 +11,7 @@ if (TOKEN_KEY == "") {
 }
 
 
-export function authorize(req: Request): string {
+export function authorize(req: Request): string | undefined {
     const token = getTokenFromRequest(req);
 
     if (!token) {
@@ -38,8 +38,14 @@ export function getUsernameFromRequest(req: Request): string | undefined {
   return token ? getUsernameFromToken(token) : undefined;
 }
 
-export function getUsernameFromToken(token: string): string  {
-    return (decode(token) as any).username;
+export function getUsernameFromToken(token: string): string | undefined {
+    if (!token) {
+        return undefined;
+    }
+    
+    let decoded: any = decode(token);
+
+    return decoded ? decoded.username : undefined;
 }
 
 export function Authorize(

@@ -41,6 +41,9 @@ export class GlobalErrorHandler extends ErrorHandler {
                 );
 
             }
+        } else {
+            console.error("Unknown error")
+            console.error(error)
         }
     }
 }
