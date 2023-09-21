@@ -21,18 +21,29 @@ export class AuthService {
     }
 
     login(username: string, password: string): Observable<string> {
-        return this.http.post<string>(`${api}/auth/login`, { username, password }, commonRequestOptions())
-            .pipe(map(token => {
-                localStorage.setItem("token", token);
-                this.updateUsername();
+        return this.http.post<string>(`${api}/auth/login`,
+            { username, password },
+            commonRequestOptions()
+        )
+        .pipe(map(token => {
+            localStorage.setItem("token", token);
+            this.updateUsername();
 
-                return token;
-            }));
+            return token;
+        }));
     }
 
     logout() {
         this.usernameBS.next(undefined);
         localStorage.setItem("token", "");
+    }
+
+    register(username: string, password: string, email: string) {
+        return this.http.post(
+            `${api}/auth/register`,
+            { username, password, email },
+            commonRequestOptions()
+        );
     }
 
     getUsernameObservable(): Observable<string | undefined> {

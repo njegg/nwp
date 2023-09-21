@@ -54,28 +54,23 @@ Bun.serve({
         throw new RequestError(`No mapping for ${path}`, 400);
     },
 
-    error(error) {
+    error(err) {
         let responseBody: any;
 
-        if (error instanceof JsonWebTokenError) {
+        if (err instanceof JsonWebTokenError) {
             responseBody = {
                 message: "Bad Token",
                 code: StatusCodes.UNAUTHORIZED
             };
-        } else if (error instanceof RequestError) {
-            responseBody = error;
-        } else if (error instanceof mongoose.Error.CastError){
-            responseBody = {
-                message: "Cast error, check parameters",
-                code: StatusCodes.BAD_REQUEST,
-            };
+        } else if (err instanceof RequestError) {
+            responseBody = err;
         } else {
             responseBody = {
                 message: "Internal server error :(",
                 code: StatusCodes.INTERNAL_SERVER_ERROR,
             };
 
-            console.error(error);
+            console.error(err);
         }
 
         let res = new Response(JSON.stringify(responseBody), {
@@ -92,4 +87,3 @@ Bun.serve({
 
 
 console.log("Server is runnin'");
-

@@ -12,7 +12,7 @@ export function mongooseToRequestError(e: any) {
     } else if (e.code ==  duplicateErrorCode) {
         let duplicateKey = Object.keys(e.keyPattern)[0];
 
-        return new RequestError(`${duplicateKey} already exists`, 409);
+        return new RequestError(`Choose a diferent ${duplicateKey}`, 409);
     }
 
     console.error(`Unknown error: ${e}`);

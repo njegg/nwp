@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { FormBuilder, NgForm, Validators } from '@angular/forms';
+import { FormBuilder, NgForm, PatternValidator, Validators } from '@angular/forms';
 import { ActivatedRoute, ActivatedRouteSnapshot, Route, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
+import { Patterns } from 'src/app/util/patterns';
 
 @Component({
     selector: 'app-login',
@@ -18,28 +19,32 @@ export class LoginComponent {
         private toastr: ToastrService,
     ) { }
 
-    loginForm = this.fb.group({
+    form = this.fb.group({
         username: ['', Validators.required],
         password: ['', Validators.required],
-    })
+    });
+
+    errors = [
+        {control: this.form.controls.username, message: "Username is required"},
+        {control: this.form.controls.password, message: "Password is required"},
+    ];
 
     login() {
-        if (this.loginForm.valid) {
-            let username = this.loginForm.value.username || ""; 
-            let password = this.loginForm.value.password || "";
+        this.form.markAllAsTouched();
+
+        if (this.form.valid) {
+            let username = this.form.value.username || ""; 
+            let password = this.form.value.password || "";
 
             this.authService.login(username, password)
-                .subscribe({
-                    next: token => {
-                        localStorage.setItem('token', token);
+                .subscribe(token => {
+                    localStorage.setItem('token', token);
 
-                        const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-                        this.router.navigate([returnUrl]);
+                    const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+                    this.router.navigate([returnUrl]);
 
-                        this.toastr.success(`Welcome ${username}`)
-                    },
-                    error: err => console.error(err.error),
-                })
+                    this.toastr.success(`Welcome ${username}`)
+                });
         }
     }
 }

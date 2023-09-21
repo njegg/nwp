@@ -21,12 +21,16 @@ export class NavbarComponent implements OnInit {
         this.authService.getUsernameObservable().subscribe(u => this.username = u);
     }
 
-    isOnLoadingPage() {
-        return this.location.path().startsWith("/login");
+    isOnPage(path: string) {
+        return this.location.path().startsWith(path);
     }
 
     logout() {
         this.authService.logout();
-        this.router.navigate(['/']);
+        this.router.navigate(["/"]);
+    }
+
+    goToRegister() {
+        this.router.navigate(["/register"])
     }
 }

@@ -1,11 +1,10 @@
 
 <div
-    class="nav-bar d-flex flex-sm-row justify-content-sm-between flex-column  p-2 fw-bold"
+    class="nav-bar d-flex flex-sm-row justify-content-sm-between flex-column p-2 fw-bold"
 >
-    <h4 class="mx-sm-2 mx-auto   "><a class="text-decoration-none" routerLink="/">🍹 TheCocktailDB Reviews</a></h4>
+    <h4 class="mx-sm-2 mx-auto"><a class="text-decoration-none" routerLink="/">🍹 TheCocktailDB Reviews</a></h4>
     
-
-    <span class="align-self-center">
+    <span class="align-self-center d-flex gap-2">
         <div *ngIf="username">
             <a routerLink="/" (click)="logout()">Logout</a>
 
@@ -14,6 +13,8 @@
                 <span class="emoji-no-bg mx-1"> 👤</span>
             </span>
         </div>
-        <app-login-button *ngIf="!username && !isOnLoadingPage()" />
+
+        <app-login-button *ngIf="!username && !isOnPage('/login')" />
+        <a routerLink="/register" *ngIf="!username && !isOnPage('/register')">Register</a>
     </span>
 </div>

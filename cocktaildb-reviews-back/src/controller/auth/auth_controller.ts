@@ -36,25 +36,16 @@ export class AuthController extends Controller {
     async login(req: Request): Promise<Response> {
         let { username, password } = await getBodyAsJson(req) as { username: string, password: string }
 
-        if (!username) {
-            throw new RequestError("Username not provided", StatusCodes.BAD_REQUEST);
-        }
+        if (!username) throw new RequestError("Username not provided", StatusCodes.BAD_REQUEST);
+        if (!password) throw new RequestError("Password not provided", StatusCodes.BAD_REQUEST);
 
-        if (!password) {
-            throw new RequestError("Password not provided", StatusCodes.BAD_REQUEST);
-        }
+        username = username.toLocaleLowerCase();
 
         let user = await User.findOne({ username }).exec();
-
-        if (!user) {
-            throw new RequestError(`User ${username} does not exist`, StatusCodes.NOT_FOUND);
-        }
+        if (!user) throw new RequestError(`User ${username} does not exist`, StatusCodes.NOT_FOUND);
 
         const correctPassword = await Bun.password.verify(password, user.password);
-
-        if (!correctPassword) {
-            throw new RequestError("Password does not match", StatusCodes.UNAUTHORIZED);
-        }
+        if (!correctPassword) throw new RequestError("Password does not match", StatusCodes.UNAUTHORIZED);
 
         const token = sign(
             { user_id: user._id, username, },

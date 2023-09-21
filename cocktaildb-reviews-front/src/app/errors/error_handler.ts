@@ -25,9 +25,9 @@ export class GlobalErrorHandler extends ErrorHandler {
     public override handleError(error: any): void {
         if (error instanceof HttpErrorResponse) {
             if (error.status == HttpStatusCode.Unauthorized) {
-
+                
                 this.toastrService.error(
-                    "Click here to log in",
+                    this.router.url.startsWith("/login") ? undefined : "Click here to log in",
                     error.error.message,
                     { disableTimeOut: true, onActivateTick: true, closeButton: true }
                 ).onTap.subscribe(_ => this.router.navigate(['/login'], { queryParams: { returnUrl: this.location.path() } }))
@@ -35,8 +35,8 @@ export class GlobalErrorHandler extends ErrorHandler {
             } else {
 
                 this.toastrService.error(
-                    "Something went wrong",
                     undefined,
+                    error.error.message,
                     { onActivateTick: true, closeButton: true }
                 );
 

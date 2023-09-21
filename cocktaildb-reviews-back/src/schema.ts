@@ -24,8 +24,8 @@ const userSchema = new mongoose.Schema({
         unique: true,
         minLength: 3,
     },
-    email: { type: String, required: true, unique: true},
-    password: { type: String, required: true }
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true, minLength: 4 }
 });
 
 export type User = mongoose.InferSchemaType<typeof userSchema>;
