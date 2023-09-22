@@ -134,9 +134,13 @@ export class ReviewController extends Controller {
         return new Response(JSON.stringify({review, vote: newVote}));
     }
 
-    async getUserReview(_: Request, cocktailIdParam: string, usernameParam: string): Promise<Response> {
+    async getUserReview(req: Request, cocktailIdParam: string, usernameParam: string): Promise<Response> {
+        let username = authorize(req);
+
         let reviewerName = usernameParam.toLocaleLowerCase();
         let cocktailId = +cocktailIdParam;
+
+        if (reviewerName != username) throw new RequestError("Unauthorized", StatusCodes.UNAUTHORIZED);
 
         let review: Review | null = await Review.findOne({ cocktailId, reviewerName }).exec();
 
