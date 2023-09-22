@@ -32,3 +32,13 @@
     color: rgb(113, 53, 70);
 	text-shadow: 0 0 0.4rem rgb(113, 53, 70);
 }
+
+#review-rating {
+    color: var(--rp-love)
+}
+
+#review-content {
+    border: 1px solid var(--rp-highlight-high);
+    background-color: var(--rp-surface);
+    width: 100%;
+}

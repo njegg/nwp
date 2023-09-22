@@ -22,13 +22,17 @@
         </button>
     </div>
 
-    <div>
-        <h5 class="fw-bold">
-            {{ reviewAndVote.review.reviewerName }}:
-        </h5>
-        <br>
-        {{ reviewAndVote.review.content }}
+    <div class="d-flex flex-column gap-1 w-100 fw-bold">
+        <div class="fs-5">
+            {{ reviewAndVote.review.reviewerName }}
+        </div>
 
-        {{ reviewAndVote.vote }}
+        <div id="review-rating" class="fs-6">
+            {{ reviewAndVote.review.rating }}/10
+        </div>
+
+        <div id="review-content" class="rounded p-2">
+            {{ reviewAndVote.review.content }}
+        </div>
     </div>
 </div>

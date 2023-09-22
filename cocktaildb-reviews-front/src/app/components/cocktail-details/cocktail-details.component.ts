@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Cocktail } from 'src/app/model/cocktail';
+import { Review, ReviewAndVote, Vote } from 'src/app/model/review';
 import { CocktailService } from 'src/app/services/cocktail.service';
+import { ReviewsService } from 'src/app/services/reviews.service';
 import { match } from 'src/app/types/functional_types/match';
 
 @Component({
@@ -11,9 +13,11 @@ import { match } from 'src/app/types/functional_types/match';
 })
 export class CocktailDetailsComponent implements OnInit {
     cocktail: Cocktail | undefined;
+    reviewsAndVotes: ReviewAndVote[] = [];
 
     constructor(
         private cocktailService: CocktailService,
+        private reviewsService: ReviewsService,
         private route: ActivatedRoute,
         private router: Router,
     ) { }
@@ -35,8 +39,13 @@ export class CocktailDetailsComponent implements OnInit {
                     throw err;
                 }
             })
+
+            this.reviewsService.getReviews(+id)
+                .subscribe(res => this.reviewsAndVotes = res);
         }
     }
 
-
+    newReview(review: Review) {
+        this.reviewsAndVotes.unshift({ review, vote: Vote.NONE });
+    }
 }

@@ -11,7 +11,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CocktailCardListComponent } from './components/cocktail-card-list/cocktail-card-list.component';
 import { CocktailDetailsComponent } from './components/cocktail-details/cocktail-details.component';
 import { CocktailReviewComponent } from './components/cocktail-review/cocktail-review.component';
-import { CocktailReviewListComponent } from './components/cocktail-review-list/cocktail-review-list.component';
 import { LoginComponent } from './components/login/login.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoginButtonComponent } from './components/login-button/login-button.component';
@@ -20,6 +19,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GlobalErrorHandler } from './errors/error_handler';
 import { ApiUnavailableComponent } from './components/api-unavailable/api-unavailable.component';
 import { RegisterComponent } from './components/register/register.component';
+import { CocktailDetailsCardComponent } from './components/cocktail-details-card/cocktail-details-card.component';
+import { ReviewFormComponent } from './components/review-form/review-form.component';
 
 @NgModule({
   declarations: [
@@ -29,12 +30,13 @@ import { RegisterComponent } from './components/register/register.component';
     CocktailCardListComponent,
     CocktailDetailsComponent,
     CocktailReviewComponent,
-    CocktailReviewListComponent,
     LoginComponent,
     NavbarComponent,
     LoginButtonComponent,
     ApiUnavailableComponent,
     RegisterComponent,
+    CocktailDetailsCardComponent,
+    ReviewFormComponent,
   ],
   imports: [
     BrowserAnimationsModule,

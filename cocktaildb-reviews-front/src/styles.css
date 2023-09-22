@@ -35,7 +35,7 @@ button {
     border: none;
 	border-radius: 10px;
 	transition: 200ms;
-	padding: 0.4rem 0.8rem;
+	padding: 0.3rem 0.8rem;
 
 	margin-left: .5rem;
 	margin-right: .5rem;
@@ -73,6 +73,20 @@ input.ng-invalid.ng-touched {
     border-bottom: 2px solid var(--rp-love);
 }
 
+textarea {
+	border-radius: 10px;
+	background-color: var(--rp-surface);
+	border: 1px solid var(--rp-pine);
+	color: var(--rp-rose);
+	padding: 0.4rem;
+	font-weight: bold;
+	height: 7rem;
+}
+
+textarea:focus {
+	outline: none;
+}
+
 .hide-animated {
     visibility: hidden;
     opacity: 0;
@@ -105,6 +119,40 @@ input.ng-invalid.ng-touched {
 .emoji-no-bg {
 	color: transparent;  
 	text-shadow: 0 0 0 var(--rp-rose);
+}
+
+
+.radio-container {
+    font-size: 1.3rem;
+    cursor: pointer;
+    color: var(--rp-pine);
+}
+
+.radio:checked + .radio-label {
+    color: var(--rp-pine)
+}
+
+.radio:checked + .radio-label {
+    color: var(--rp-foam);
+    cursor: pointer;
+    text-shadow: 0 0 0.5rem var(--rp-foam);
+}
+
+.radio {
+    width: 0;
+    height: 0;
+	visibility: hidden;
+}
+
+.radio:hover,
+.radio-label:hover {
+    color: var(--rp-foam);
+    cursor: pointer;
+    text-shadow: 0 0 0.5rem var(--rp-foam);
+}
+
+.radio-label {
+    font-size: x-large;
 }
 
 

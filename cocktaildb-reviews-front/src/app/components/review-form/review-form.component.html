@@ -1,0 +1,36 @@
+<form
+    class="d-flex rounded p-2 flex-column"
+>
+    <h4>Write a review</h4>
+
+    <div class="d-flex flex-row justify-content-between">
+        <div class="radio-container d-flex flex-row gap-1 mb-2">
+            <ng-container *ngFor="let _ of Array(10).fill(0); let i = index">
+                <input
+                    class="radio"
+                    type="radio"
+                    name="rating"
+                    id="rating-{{ i + 1 }}"
+                    value="{{i + 1}}"
+
+                    [value]="review.rating"
+                    [checked]="i == review.rating"
+                >
+
+                <label
+                    class="radio-label"
+                    for="rating-{{i + 1}}"
+                >
+                    {{ i + 1}}
+                </label>
+            </ng-container>
+        </div>
+
+        <button (click)="submit()" class="align-self-baseline">Add</button>
+    </div>
+
+    <textarea
+        [(ngModel)]="review.content"
+        name="content"
+    ></textarea>
+</form>

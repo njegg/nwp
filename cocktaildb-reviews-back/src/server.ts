@@ -10,7 +10,11 @@ import { PingController } from "./controller/ping_controller";
 
 mongoose.connect('mongodb://127.0.0.1:27017/nwp')
     .then(_ => console.log("Connected to DB"))
-    .catch(err => {console.error("Failed to connect to DB:"); console.error(err); })
+    .catch(err => {
+        console.error("Failed to connect to DB:\n");
+        console.error(err);
+        process.exit(1);
+    });
 
 const controllers = [
     new ReviewController("/reviews"),

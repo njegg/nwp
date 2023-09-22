@@ -1,7 +1,7 @@
 import { HttpClient, HttpContext, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { env } from '../environment/env';
-import { ReviewAndVote, Vote } from '../model/review';
+import { Review, ReviewAndVote, Vote } from '../model/review';
 import { Observable } from 'rxjs';
 import { commonRequestOptions } from '../request_options';
 
@@ -22,5 +22,13 @@ export class ReviewsService {
     voteReview(reviewId: string, vote: Vote): Observable<ReviewAndVote> {
         return this.http
             .post<ReviewAndVote>(`${api}/reviews/${reviewId}/${Vote.toString(vote)}`, {}, commonRequestOptions());
+    }
+
+    postReview(content: string, rating: number, cocktailId: number) {
+        return this.http.post<Review>(
+            `${api}/reviews`,
+            { rating, content, cocktailId },
+            commonRequestOptions()
+        );
     }
 }

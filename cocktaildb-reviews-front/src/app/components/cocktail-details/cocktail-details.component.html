@@ -10,5 +10,13 @@
 
     <h3>User reviews</h3>
     <hr>
-    <app-cocktail-review-list [cocktailId]="cocktail.id" />
+
+    <app-review-form [coctailId]="cocktail.id" (newReviewEvent)="newReview($event)"></app-review-form>
+    <hr>
+    
+    <div
+        *ngFor="let reviewAndVote of reviewsAndVotes"
+    >
+        <app-cocktail-review [reviewAndVote]="reviewAndVote" />
+    </div>
 </div>
