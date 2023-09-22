@@ -6,6 +6,7 @@ import { Review, ReviewVote, User } from "../schema";
 import { Controller } from "./controller";
 import { authorize, getTokenFromRequest, getUsernameFromRequest, getUsernameFromToken } from "./auth/auth";
 import { StatusCodes } from "http-status-codes";
+import { read } from "bun:ffi";
 
 
 export class ReviewController extends Controller {
@@ -23,6 +24,7 @@ export class ReviewController extends Controller {
 
         let reviewBody = await getBodyAsJson<Review>(req);
         reviewBody.reviewerName = username;
+        reviewBody.createdAt = new Date();
 
         let review = new Review(reviewBody);
 
@@ -46,7 +48,7 @@ export class ReviewController extends Controller {
             throw new RequestError(`Path variable id: '${cocktailId}' should be a number`, 400);
         }
 
-        let reviews = await Review.find({ cocktailId }).exec();
+        let reviews = await Review.find({ cocktailId }, null, {sort: {createdAt: -1}}).exec();
         let response: {review: Review, vote: Vote}[];
 
         let username = getUsernameFromRequest(req);
@@ -111,6 +113,7 @@ export class ReviewController extends Controller {
                 username,
                 review_id: idParam,
                 cocktail_id: review.cocktailId,
+                createdAt: new Date(),
             });
 
         let oldVote = reviewVote.amount;

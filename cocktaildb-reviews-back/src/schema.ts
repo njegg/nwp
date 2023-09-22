@@ -11,6 +11,7 @@ const reviewSchema = new mongoose.Schema({
         required: true,
     },
     upvotes: { type: Number, default: 0 },
+    createdAt: { type: Date, require: true },
 });
 
 export type Review = mongoose.InferSchemaType<typeof reviewSchema>;
@@ -25,7 +26,8 @@ const userSchema = new mongoose.Schema({
         minLength: 3,
     },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true, minLength: 4 }
+    password: { type: String, required: true, minLength: 4 },
+    createdAt: { type: Date, require: true },
 });
 
 export type User = mongoose.InferSchemaType<typeof userSchema>;
@@ -37,6 +39,7 @@ const voteSchema = new mongoose.Schema({
     review_id: { type: String, required: true },
     cocktail_id: { type: Number, required: true },
     amount: { type: Number, required: true, enum: [1, -1, 0] },
+    createdAt: { type: Date, require: true },
 });
 
 export type ReviewVote = mongoose.InferSchemaType<typeof voteSchema>;

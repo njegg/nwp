@@ -18,7 +18,8 @@ export class AuthController extends Controller {
     }
 
     async register(req: Request): Promise<Response> {
-        let user = new User(await getBodyAsJson(req))
+        let user = new User(await getBodyAsJson(req));
+        user.createdAt = new Date();
 
         user = await user.save()
             .catch(e => {throw mongooseToRequestError(e)});
