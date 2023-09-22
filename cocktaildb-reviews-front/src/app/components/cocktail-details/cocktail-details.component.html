@@ -1,19 +1,11 @@
 <div *ngIf="cocktail" >
-    <img
-        width="200"
-        class="cocktail-image"
-        [src]="cocktail.imageSource"
-        alt="Image of {{cocktail.name}}"
-    >
-
-    {{ cocktail.name }}
-
-    <h3>User reviews</h3>
+    <app-cocktail-details-card [cocktail]="cocktail" />
     <hr>
 
-    <app-review-form [coctailId]="cocktail.id" (newReviewEvent)="newReview($event)"></app-review-form>
+    <app-review-form [coctailId]="cocktail.id" (newReviewEvent)="newReview($event)" />
     <hr>
     
+    <h4>User reviews</h4>
     <div
         *ngFor="let reviewAndVote of reviewsAndVotes"
     >

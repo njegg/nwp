@@ -1,5 +1,6 @@
 form {
     background-color: var(--rp-overlay);
     font-size: 1.2rem;
+    border: 1px solid var(--rp-highlight-high)
 }
 

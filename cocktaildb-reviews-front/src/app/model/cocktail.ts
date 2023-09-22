@@ -1,4 +1,30 @@
+export type Ingredient = { ingredient: string, measure: string }
+
+export type Instructions = { language: string, content: string };
+
 export function cocktailResponseToCocktail(cocktail: CocktailResponse): Cocktail {
+    let ingredients: Ingredient[] = [];
+    
+    for (let i = 1; i <= 15; i++) {
+        const ingredient = cocktail[("strIngredient" + i) as keyof CocktailResponse] + "";
+        const measure = cocktail[("strMeasure" + i) as keyof CocktailResponse] + "";
+
+        if (ingredient !== "null") ingredients.push({
+            ingredient: ingredient,
+            measure: measure === "null" ? "" : measure
+        });
+    }
+
+    let instructions: Instructions[] = [];
+
+    if (cocktail.strInstructions != null) instructions.push({ language: "English", content: cocktail.strInstructions });
+    if (cocktail["strInstructionsZH-HANS"] != null) instructions.push({ language: "Chinese Simplified", content: cocktail["strInstructionsZH-HANS"] });
+    if (cocktail["strInstructionsZH-HANT"] != null) instructions.push({ language: "Chinese Traditional", content: cocktail["strInstructionsZH-HANT"] });
+    if (cocktail.strInstructionsDE != null) instructions.push({ language: "German", content: cocktail.strInstructionsDE });
+    if (cocktail.strInstructionsFR != null) instructions.push({ language: "French", content: cocktail.strInstructionsFR });
+    if (cocktail.strInstructionsES != null) instructions.push({ language: "Spanish", content: cocktail.strInstructionsES });
+    if (cocktail.strInstructionsIT != null) instructions.push({ language: "Itailian", content: cocktail.strInstructionsIT });
+
     return {
         id: +cocktail.idDrink,
         name: cocktail.strDrink,
@@ -6,6 +32,9 @@ export function cocktailResponseToCocktail(cocktail: CocktailResponse): Cocktail
         alcoholic: cocktail.strAlcoholic,
         glass: cocktail.strGlass,
         category: cocktail.strCategory,
+
+        ingredients,
+        instructions,
     }
 }
 
@@ -16,27 +45,12 @@ export function cocktailListResponseToCocktailList(cocktails: CocktailListRespon
 export interface Cocktail {
     id: number
     name: string,
-    // drinkAlternate: string,
-    // tags: string,
-    // video: string,
     category: string,
-    // IBA: string,
     alcoholic: string,
     glass: string,
-    // instructions: string,
-    // instructionsES: string,
-    // instructionsDE: string,
-    // instructionsFR: string,
-    // instructionsIT: string,
-    // "instructionsZH-HANS": string,
-    // "instructionsZH-HANT": string,
-    // drinkThumb: string,
-    // ingredients: string[],
-    // measures: string[],
+    instructions: Instructions[],
+    ingredients: Ingredient[],
     imageSource: string,
-    // imageAttribution: string,
-    // creativeCommonsConfirmed: string,
-    // dateModified: Date,
 }
 
 export interface CocktailResponse {

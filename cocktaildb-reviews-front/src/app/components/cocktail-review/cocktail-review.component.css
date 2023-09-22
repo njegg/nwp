@@ -1,6 +1,7 @@
 .review {
     background-color: var(--rp-overlay);
     border-radius: 10px;
+    border: 1px solid var(--rp-highlight-high);
 }
 
 .vote-button {

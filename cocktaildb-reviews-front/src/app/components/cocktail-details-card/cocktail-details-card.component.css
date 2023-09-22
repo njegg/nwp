@@ -1,0 +1,35 @@
+h3 {
+    margin: 1rem 0;
+}
+
+.cocktail-name {
+    color: var(--rp-rose);
+    text-decoration: underline;
+}
+
+.main-card {
+    background-color: var(--rp-overlay);
+    border: 1px solid var(--rp-highlight-high)
+}
+
+.instructions {
+    background-color: var(--rp-overlay);
+    border: 1px solid var(--rp-highlight-high);
+}
+
+/* @media (max-width: 600px) {
+    img {
+        margin: auto;
+        width: 50%;
+        height: auto;
+    }
+
+    .main-card {
+        justify-content: center;
+    }
+
+    .cocktail-name {
+        text-align: center;
+    }
+}
+ */

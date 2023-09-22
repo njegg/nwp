@@ -76,15 +76,18 @@ input.ng-invalid.ng-touched {
 textarea {
 	border-radius: 10px;
 	background-color: var(--rp-surface);
-	border: 1px solid var(--rp-pine);
+	/* border: 1px solid var(--rp-pine); */
+	border: none;
 	color: var(--rp-rose);
 	padding: 0.4rem;
 	font-weight: bold;
 	height: 7rem;
+	box-shadow: 0 0 4px var(--rp-pine);
 }
 
 textarea:focus {
 	outline: none;
+	/* border: 1px solid var(--rp-pine); */
 }
 
 .hide-animated {
@@ -152,7 +155,27 @@ textarea:focus {
 }
 
 .radio-label {
+	color: var(--rp-pine);
     font-size: x-large;
+}
+
+
+table {
+	font-weight: bold;
+	color: var(--rp-text);
+	border-radius: 10px;
+	border-collapse: collapse;
+	background-color: var(--rp-highlight-med);
+	box-shadow: 0 0 4px var(--rp-highlight-med);
+}
+
+td {
+	padding: 0.2rem 1rem;
+}
+
+
+tr:nth-child(even) {
+	background-color: var(--rp-overlay);
 }
 
 

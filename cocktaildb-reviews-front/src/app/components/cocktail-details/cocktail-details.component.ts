@@ -28,7 +28,7 @@ export class CocktailDetailsComponent implements OnInit {
         if (id) {
             this.cocktailService.getCocktailById(+id).subscribe({
                 next: res => match(res, {
-                    Ok: cocktail => this.cocktail = cocktail,
+                    Ok: res => { this.cocktail = res; console.log(res) },
                     Err: err => {
                         this.router.navigate(['']);
                         throw err;

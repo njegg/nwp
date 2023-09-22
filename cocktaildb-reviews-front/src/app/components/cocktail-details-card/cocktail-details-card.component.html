@@ -1,1 +1,77 @@
-<p>cocktail-details-card works!</p>
+<div class="
+    d-flex
+    align-items-center justify-content-sm-start
+    flex-sm-row flex-column
+
+    flex-wrap main-card rounded
+    "
+>
+
+    <img
+        class="rounded"
+        width="200"
+        height="200"
+        id="cocktail-image"
+        [src]="cocktail.imageSource"
+        alt="Image of {{cocktail.name}}"
+    >
+
+    <div class="p-2">
+        <h3 class="fw-bold text-center text-sm-start cocktail-name">{{ cocktail.name }}</h3>
+        
+        <table>
+            <tr>
+                <td>Category</td>
+                <td>{{cocktail.category}}</td>
+           </tr>
+            <tr>
+                <td>Glass</td>
+                <td>{{cocktail.glass}}</td>
+           </tr>
+            <tr>
+                <td>Alcoholic</td>
+                <td>{{cocktail.alcoholic}}</td>
+           </tr>
+        </table>
+    </div>
+</div>
+
+<h3>Ingredients</h3>
+
+<table class="ingredients-table">
+    <tr
+        *ngFor="let ingredient of cocktail.ingredients"
+        >
+            <td class="ingredient">{{ ingredient.ingredient }}</td>
+        <td class="measure">{{ ingredient.measure }}</td>
+    </tr>
+</table>
+
+<h3>Instructions</h3>
+
+<div class="p-1 rounded instructions">
+    <ng-container *ngFor="let instruction of cocktail.instructions; let i = index">
+        <input
+            class="radio"
+                type="radio"
+                name="instructions"
+            id="instructions-{{ i + 1 }}"
+
+                [value]="instruction"
+            [(ngModel)]="selectedInstructions"
+        >
+
+        <label
+        class="radio-label fs-5"
+        for="instructions-{{i + 1}}"
+        >
+            {{ instruction.language }}
+        </label>
+    </ng-container>
+    <br>
+
+
+    <div class="p-1">
+        {{ selectedInstructions.content }}
+    </div>
+</div>
