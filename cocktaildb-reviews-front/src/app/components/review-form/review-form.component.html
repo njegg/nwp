@@ -1,4 +1,5 @@
 <form
+    *ngIf="username; else noUser"
     class="d-flex rounded p-2 flex-column"
 >
     <h4>Write a review</h4>
@@ -27,7 +28,7 @@
             </ng-container>
         </div>
 
-        <button (click)="submit()" class="align-self-baseline">Add</button>
+        <button (click)="submit()" class="align-self-baseline">{{userReview ? "Update" : "Post"}}</button>
     </div>
 
     <textarea
@@ -35,3 +36,7 @@
         name="content"
     ></textarea>
 </form>
+
+<ng-template #noUser>
+    <app-login-button></app-login-button> to post your review
+</ng-template>

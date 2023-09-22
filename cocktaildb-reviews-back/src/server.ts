@@ -63,7 +63,7 @@ Bun.serve({
 
         if (err instanceof JsonWebTokenError) {
             responseBody = {
-                message: "Bad Token",
+                message: "Your session has expired",
                 code: StatusCodes.UNAUTHORIZED
             };
         } else if (err instanceof RequestError) {

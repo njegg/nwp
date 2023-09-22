@@ -1,12 +1,10 @@
 import mongoose from "mongoose";
-import ObjectId from "mongoose";
 import { RequestError } from "../error";
 import { getBodyAsJson } from "../request_util";
-import { Review, ReviewVote, User } from "../schema";
+import { Review, ReviewVote } from "../schema";
 import { Controller } from "./controller";
-import { authorize, getTokenFromRequest, getUsernameFromRequest, getUsernameFromToken } from "./auth/auth";
+import { authorize, getUsernameFromRequest } from "./auth/auth";
 import { StatusCodes } from "http-status-codes";
-import { read } from "bun:ffi";
 
 
 export class ReviewController extends Controller {
@@ -14,31 +12,38 @@ export class ReviewController extends Controller {
         super(mapping);
 
         this.addPath("GET", "/{id}", this.getCocktailReviews);
+        this.addPath("GET", "/{id}/{username}", this.getUserReview);
 
         this.addPath("POST", "", this.postReview);
         this.addPath("POST", "/{id}/{vote}", this.voteReview);
     }
 
+
     async postReview(req: Request): Promise<Response> {
         let username = authorize(req);
-
         let reviewBody = await getBodyAsJson<Review>(req);
+
         reviewBody.reviewerName = username;
         reviewBody.createdAt = new Date();
 
-        let review = new Review(reviewBody);
+        let review = await Review.findOneAndUpdate({reviewerName: username, cocktailId: reviewBody.cocktailId}, reviewBody).exec();
+        let update = review != null;
 
-        await review.save()
-            .catch(e => {
-                if (e instanceof mongoose.Error.ValidationError) {
-                    let message = Object.values(e.errors).map(e => e.message || "").join(" ");
-                    throw new RequestError(message, 400)
-                }
+        if (review == null) {
+            review = await new Review(reviewBody).save()
+                .catch(e => {
+                    if (e instanceof mongoose.Error.ValidationError) {
+                        let message = Object.values(e.errors).map(e => e.message || "").join(" ");
+                        throw new RequestError(message, 400)
+                    }
 
-                throw new RequestError("Something went wrong", 500);
-            });
+                    console.info(e)
 
-        return new Response(JSON.stringify(review));
+                    throw new RequestError("Something went wrong", 500);
+                });
+        }
+
+        return new Response(JSON.stringify({review: await Review.findById(review._id), update}));
     }
 
     async getCocktailReviews(req: Request, cocktailIdParam: string) {
@@ -127,6 +132,17 @@ export class ReviewController extends Controller {
         review.save();
 
         return new Response(JSON.stringify({review, vote: newVote}));
+    }
+
+    async getUserReview(_: Request, cocktailIdParam: string, usernameParam: string): Promise<Response> {
+        let reviewerName = usernameParam.toLocaleLowerCase();
+        let cocktailId = +cocktailIdParam;
+
+        let review: Review | null = await Review.findOne({ cocktailId, reviewerName }).exec();
+
+        if (review == null) throw new RequestError("Review not found", StatusCodes.NOT_FOUND);
+
+        return new Response(JSON.stringify(review));
     }
 
     async ok(_: Request) {

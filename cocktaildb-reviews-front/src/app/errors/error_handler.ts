@@ -24,23 +24,11 @@ export class GlobalErrorHandler extends ErrorHandler {
 
     public override handleError(error: any): void {
         if (error instanceof HttpErrorResponse) {
-            if (error.status == HttpStatusCode.Unauthorized) {
-                
-                this.toastrService.error(
-                    this.router.url.startsWith("/login") ? undefined : "Click here to log in",
-                    error.error.message,
-                    { disableTimeOut: true, onActivateTick: true, closeButton: true }
-                ).onTap.subscribe(_ => this.router.navigate(['/login'], { queryParams: { returnUrl: this.location.path() } }))
-
-            } else {
-
-                this.toastrService.error(
-                    undefined,
-                    error.error.message,
-                    { onActivateTick: true, closeButton: true }
-                );
-
-            }
+            this.toastrService.error(
+                undefined,
+                error.error.message,
+                { onActivateTick: true }
+            );
         } else {
             console.error("Unknown error")
             console.error(error)

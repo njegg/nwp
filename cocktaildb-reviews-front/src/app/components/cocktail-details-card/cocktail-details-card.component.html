@@ -6,7 +6,6 @@
     flex-wrap main-card rounded
     "
 >
-
     <img
         class="rounded"
         width="200"
@@ -53,11 +52,11 @@
     <ng-container *ngFor="let instruction of cocktail.instructions; let i = index">
         <input
             class="radio"
-                type="radio"
-                name="instructions"
+            type="radio"
+            name="instructions"
             id="instructions-{{ i + 1 }}"
 
-                [value]="instruction"
+            [value]="instruction"
             [(ngModel)]="selectedInstructions"
         >
 

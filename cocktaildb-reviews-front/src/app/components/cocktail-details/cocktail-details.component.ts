@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Cocktail } from 'src/app/model/cocktail';
-import { Review, ReviewAndVote, Vote } from 'src/app/model/review';
+import { PostReviewResponse, Review, ReviewAndVote, Vote } from 'src/app/model/review';
+import { AuthService } from 'src/app/services/auth.service';
 import { CocktailService } from 'src/app/services/cocktail.service';
 import { ReviewsService } from 'src/app/services/reviews.service';
 import { match } from 'src/app/types/functional_types/match';
@@ -13,14 +14,19 @@ import { match } from 'src/app/types/functional_types/match';
 })
 export class CocktailDetailsComponent implements OnInit {
     cocktail: Cocktail | undefined;
+
     reviewsAndVotes: ReviewAndVote[] = [];
+
+    username: string | undefined = undefined;
+    userReview: Review | undefined = undefined;
 
     constructor(
         private cocktailService: CocktailService,
         private reviewsService: ReviewsService,
         private route: ActivatedRoute,
         private router: Router,
-    ) { }
+    ) {
+    }
 
     ngOnInit(): void {
         let id = this.route.snapshot.paramMap.get('id');
@@ -28,7 +34,7 @@ export class CocktailDetailsComponent implements OnInit {
         if (id) {
             this.cocktailService.getCocktailById(+id).subscribe({
                 next: res => match(res, {
-                    Ok: res => { this.cocktail = res; console.log(res) },
+                    Ok: res => this.cocktail = res,
                     Err: err => {
                         this.router.navigate(['']);
                         throw err;
@@ -43,9 +49,23 @@ export class CocktailDetailsComponent implements OnInit {
             this.reviewsService.getReviews(+id)
                 .subscribe(res => this.reviewsAndVotes = res);
         }
-    }
 
-    newReview(review: Review) {
-        this.reviewsAndVotes.unshift({ review, vote: Vote.NONE });
+    }
+    
+    newReview(response: PostReviewResponse) {
+        let review = response.review;
+
+        if (response.update) {
+            for (let reviewAndVote of this.reviewsAndVotes) {
+                if (reviewAndVote.review._id == review._id) {
+                    reviewAndVote.review.content = review.content;
+                    reviewAndVote.review.rating = review.rating;
+
+                    break;
+                }
+            }
+        } else {
+            this.reviewsAndVotes.unshift({ review, vote: Vote.NONE });
+        }
     }
 }

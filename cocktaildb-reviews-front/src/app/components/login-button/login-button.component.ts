@@ -4,16 +4,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
     selector: 'app-login-button',
     template: `
-        <!-- <button (click)="navigateToLoginPage()">Log in</button> -->
-        <a routerLink="/login" [queryParams]>Log in</a>
+        <a routerLink="/login" [queryParams]="queryParams">Log in</a>
     `,
 })
 export class LoginButtonComponent {
-    constructor(private router: Router) { }
+    queryParams: any;
 
-    queryParams = { returnUrl: this.router.url };
-
-    navigateToLoginPage() {
-        this.router.navigate(["/login"], { queryParams: { returnUrl: this.router.url } })
+    constructor(private router: Router) {
+        this.queryParams = { returnUrl: this.router.url };
     }
 }

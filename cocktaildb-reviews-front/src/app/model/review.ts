@@ -8,6 +8,11 @@ export interface Review {
     upvotes: number,
 }
 
+export interface PostReviewResponse {
+    review: Review,
+    update: boolean,
+}
+
 export enum Vote {
     UP = 1,
     DOWN = -1,

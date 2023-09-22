@@ -1,9 +1,10 @@
 import { HttpClient, HttpContext, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { env } from '../environment/env';
-import { Review, ReviewAndVote, Vote } from '../model/review';
+import { PostReviewResponse, Review, ReviewAndVote, Vote } from '../model/review';
 import { Observable } from 'rxjs';
 import { commonRequestOptions } from '../request_options';
+import { AuthService } from './auth.service';
 
 let api = env.api_reviews;
 
@@ -12,7 +13,11 @@ let api = env.api_reviews;
 })
 export class ReviewsService {
 
-    constructor(private http: HttpClient) {}
+    username: string | undefined = undefined;
+
+    constructor(
+        private http: HttpClient,
+    ) { }
 
     getReviews(cocktailId: number): Observable<ReviewAndVote[]> {
         return this.http
@@ -25,9 +30,16 @@ export class ReviewsService {
     }
 
     postReview(content: string, rating: number, cocktailId: number) {
-        return this.http.post<Review>(
+        return this.http.post<PostReviewResponse>(
             `${api}/reviews`,
             { rating, content, cocktailId },
+            commonRequestOptions()
+        );
+    }
+
+    getUserReview(username: string, cocktailId: number) {
+        return this.http.get<Review>(
+            `${api}/reviews/${cocktailId}/${username}`,
             commonRequestOptions()
         );
     }
