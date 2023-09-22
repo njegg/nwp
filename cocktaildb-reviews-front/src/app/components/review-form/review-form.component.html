@@ -11,10 +11,11 @@
                     type="radio"
                     name="rating"
                     id="rating-{{ i + 1 }}"
-                    value="{{i + 1}}"
+                    value="{{ i + 1 }}"
 
-                    [value]="review.rating"
-                    [checked]="i == review.rating"
+                    [value]="i + 1"
+                    [(ngModel)]="review.rating"
+                    [checked]="i == 4"
                 >
 
                 <label

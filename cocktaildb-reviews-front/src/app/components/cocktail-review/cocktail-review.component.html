@@ -31,7 +31,11 @@
             {{ reviewAndVote.review.rating }}/10
         </div>
 
-        <div id="review-content" class="rounded p-2">
+        <div
+            id="review-content"
+            class="rounded p-2"
+            *ngIf="reviewAndVote.review.content && reviewAndVote.review.content != ''"
+        >
             {{ reviewAndVote.review.content }}
         </div>
     </div>

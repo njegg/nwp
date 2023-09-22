@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const reviewSchema = new mongoose.Schema({
     cocktailId: { type: Number, required: true },
     reviewerName: { type: String, required: true },
-    content: { type: String, required: true },
+    content: { type: String },
     rating: {
         type: Number,
         min: [1, "Rating must be between 1 and 10, got {VALUE}"],
