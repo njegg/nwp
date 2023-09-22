@@ -46,11 +46,7 @@ export class ReviewFormComponent implements OnInit {
 
     submit() {
         this.reviewService.postReview(this.review.content, this.review.rating, this.coctailId)
-            .subscribe(res => {
-                this.newReviewEvent.emit(res)
-
-                if (!res.update) this.review.content = "";
-            });
+            .subscribe(res => this.newReviewEvent.emit(res))
     }
 
     updateUserReview() {
