@@ -21,6 +21,7 @@ import { ApiUnavailableComponent } from './components/api-unavailable/api-unavai
 import { RegisterComponent } from './components/register/register.component';
 import { CocktailDetailsCardComponent } from './components/cocktail-details-card/cocktail-details-card.component';
 import { ReviewFormComponent } from './components/review-form/review-form.component';
+import { SearchableSelectComponent } from './components/searchable-select/searchable-select.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { ReviewFormComponent } from './components/review-form/review-form.compon
     RegisterComponent,
     CocktailDetailsCardComponent,
     ReviewFormComponent,
+    SearchableSelectComponent,
   ],
   imports: [
     BrowserAnimationsModule,

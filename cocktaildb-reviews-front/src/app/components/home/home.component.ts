@@ -5,6 +5,7 @@ import { Cocktail } from 'src/app/model/cocktail';
 import { CocktailService } from 'src/app/services/cocktail.service';
 import { CocktailSearchType } from 'src/app/types/cocktail_search_type';
 import { match } from 'src/app/types/functional_types/match';
+import { SearchableSelectComponent } from '../searchable-select/searchable-select.component';
 
 
 @Component({
@@ -30,6 +31,8 @@ export class HomeComponent implements OnInit {
     categories: string[] = [];
     glasses: string[] = [];
     alchocolicTypes: string[] = [];
+
+    searchComponent!: SearchableSelectComponent;
 
     /**
      * Generated letters A-Z
@@ -124,8 +127,12 @@ export class HomeComponent implements OnInit {
 
     resetSearchQuery() {
         this.searchQuery = "";
-    }
 
+        if (this.searchComponent) {
+            this.searchComponent.reset();
+        }
+}
+        
     private saveCocktailsToLocalStorage() {
         localStorage.setItem('loaded cocktails',  JSON.stringify(this.cocktails));
     }

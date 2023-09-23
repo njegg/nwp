@@ -55,7 +55,7 @@
 
         <!-- Filter by dropdown value -->
         <ng-template #showDropdownFilters>
-            <select
+            <!-- <select
                 [value]="searchQuery"
                 [(ngModel)]="searchQuery"
                 name="filter-dropdown"
@@ -64,7 +64,13 @@
                 <option *ngFor="let val of dropdownFilters.get(selectedFilterType)">
                     {{ val }}
                 </option>
-            </select>
+            </select> -->
+
+            <app-searchable-select
+                [items]="dropdownFilters.get(selectedFilterType) || []" 
+                (selectedItemChanged)="searchQuery = $event || ''"
+                (onInit)="searchComponent = $event"
+            />
         </ng-template>
 
         <button

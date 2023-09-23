@@ -1,0 +1,60 @@
+#container, button, input {
+    background-color: var(--rp-highlight-med);
+    color: var(--rp-rose);
+    outline: none;
+    border: none;
+    height: 2rem;
+    width: 20rem;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+#container.visible #dropdown {
+    border-top: none;
+}
+
+#items-container {
+    max-height: 16rem;
+    overflow-y: scroll;
+    box-shadow: 0 5px 5px var(--rp-highlight-low);
+}
+
+input {
+    border-radius: 0;
+    margin: 0;
+}
+
+button {
+    font-size: 1.2rem;
+}
+
+button:hover {
+    box-shadow: none;
+    border-bottom: none;
+}
+
+#container.visible button {
+    border-radius: 10px 10px 0 0;
+    transition: 200ms;
+    transition: border-radius 0ms !important;
+}
+
+
+.list-item {
+    font-size: 1.2rem;
+    border: 2px solid var(--rp-highlight-med);
+    border-top: none;
+    background-color: var(--rp-overlay);
+    font-weight: bold;
+}
+
+.list-item.selected {
+    background-color: var(--rp-surface);
+}
+
+.list-item:hover {
+    cursor: pointer;
+    background-color: var(--rp-surface);
+}

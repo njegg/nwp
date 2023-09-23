@@ -1,0 +1,36 @@
+<div
+    id="container"
+    (keyup.arrowup)="selectNext(-1)"
+    (keyup.arrowdown)="selectNext(+1)"
+    (keydown.enter)="select(selectedIndex || 0)"
+    [ngClass]="dropdownVisible ? 'visible' : 'hidden'"
+>
+    <button
+        (click)="toggle()"
+        class="w-100 m-0"
+    >
+        {{ selectedItem || "ˇ" }}
+    </button>
+
+    <div
+        *ngIf="dropdownVisible"
+        id="dropdown"
+        class="d-flex flex-column position-absolute"
+    >
+        <input 
+            [(ngModel)]="query"
+            (keyup)="search()"
+        />
+        <div id="items-container">
+            <div
+                *ngFor="let item of visibleItems; let i = index"
+                class="list-item p-1"
+                id="item-{{i}}"
+                (click)="select(i)"
+                [class.selected]="selectedIndex == i"
+            >
+                {{ item }}
+            </div>
+        </div>
+    </div>
+</div>
