@@ -13,15 +13,15 @@ export interface PostReviewResponse {
     update: boolean,
 }
 
+export interface ReviewAndVote {
+    review: Review,
+    vote: Vote,
+}
+
 export enum Vote {
     UP = 1,
     DOWN = -1,
     NONE = 0,
-}
-
-export interface ReviewAndVote {
-    review: Review,
-    vote: Vote,
 }
 
 export namespace Vote {
@@ -33,3 +33,5 @@ export namespace Vote {
         }
     }
 }
+
+export type PopularReviewsResponse = { cocktailId: number }[];

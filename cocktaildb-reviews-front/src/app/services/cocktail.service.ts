@@ -1,13 +1,10 @@
-import { HttpClient, HttpContext, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Cocktail, CocktailListResponse, cocktailResponseToCocktail, cocktailListResponseToCocktailList } from '../model/cocktail';
-import Err from '../types/functional_types/err';
 import { Observable, map } from 'rxjs';
 import { env } from '../environment/env';
 import { CocktailSearchType } from '../types/cocktail_search_type';
 import { AttributeListResponse, AttributeType } from '../model/cocktail_attributes';
-import { Result } from '../types/functional_types/result';
-import Ok from '../types/functional_types/ok';
 import { getJsonBodyOptions } from './options';
 
 @Injectable({
@@ -25,19 +22,21 @@ export class CocktailService {
             .pipe(map(this.getFirstCocktail));
     }
 
-    getCocktailById(id: number): Observable<Result<Cocktail>> {
+    getCocktailById(id: number): Observable<Cocktail> {
         return this.http
             .get<CocktailListResponse>(`${this.api}/lookup.php?i=${id}`, getJsonBodyOptions)
             .pipe(map(res => {
-                return res.drinks ?
-                    Ok(this.getFirstCocktail(res)) :
-                    Err("Cocktail not found")
+                if (res.drinks) {
+                    return this.getFirstCocktail(res);
+                }
+
+                throw new HttpErrorResponse({ error: { message: "Cocktail not found"}, status: HttpStatusCode.NotFound });
             }));
     }
 
-    searchBy(type: CocktailSearchType, query: string): Result<Observable<Cocktail[]>> {
+    searchBy(type: CocktailSearchType, query: string): Observable<Cocktail[]> {
         if (query.trim() === "") {
-            return Err("Search query is empty");
+            throw new Error("Search query is empty");
         }
 
         switch(type) {
@@ -54,48 +53,44 @@ export class CocktailService {
      * Returns a list of possible cocktail attribute values.
      * Attributes are: `Glass`, `Category`, `Alcoholic`, `Ingredient`
      */
-    getAttributes(searchType: CocktailSearchType): Observable<Result<string[]>> {
+    getAttributes(searchType: CocktailSearchType): Observable<string[]> {
         let urlLetter = CocktailSearchType.getAttributeUrlLetter(searchType);
 
         return this.http
             .get<AttributeListResponse>(`${env.api_cocktail}/list.php?${urlLetter}=list`, getJsonBodyOptions)
-            .pipe(map(res =>
-                res.drinks ?
-                    Ok(res.drinks.map(v => Object.values(v)[0])) :
-                    Err(`'${CocktailSearchType[searchType]}' is not supported as attirbute type`)
-            ))
+            .pipe(map(res => {
+                if (res.drinks) {
+                    return res.drinks.map(v => Object.values(v)[0]);
+                }
+
+                throw new Error(`'${CocktailSearchType.getAttributeUrlLetter(searchType)}' is not supported as attirbute type`);
+            }));
     }
 
-    private searchByName(name: string): Result<Observable<Cocktail[]>> {
+    private searchByName(name: string): Observable<Cocktail[]> {
         if (name.trim() === "") {
-            return Err("Cocktail name is empty");
+            throw new Error("Cocktail name is empty");
         }
 
-        return Ok(
-            this.http
-                .get<CocktailListResponse>(`${this.api}/search.php?s=${name}`, getJsonBodyOptions)
-                .pipe(map(cocktailListResponseToCocktailList))
-        );
+        return this.http
+            .get<CocktailListResponse>(`${this.api}/search.php?s=${name}`, getJsonBodyOptions)
+            .pipe(map(cocktailListResponseToCocktailList));
     }
 
-    private searchByFirstLetter(letter: string): Result<Observable<Cocktail[]>> {
+    private searchByFirstLetter(letter: string): Observable<Cocktail[]> {
         if (letter.length != 1) {
-            return Err(`${letter} is not a valid letter`);
+            throw new Error(`${letter} is not a valid letter`);
         }
 
-        return Ok(
-            this.http
+        return this.http
                 .get<CocktailListResponse>(`${this.api}/search.php?f=${letter}`, getJsonBodyOptions)
-                .pipe(map(cocktailListResponseToCocktailList))
-        );
+                .pipe(map(cocktailListResponseToCocktailList));
     }
 
-    private searchByAttribute(attributeType: AttributeType, query: string): Result<Observable<Cocktail[]>> {
-        return Ok(
-            this.http
+    private searchByAttribute(attributeType: AttributeType, query: string): Observable<Cocktail[]> {
+        return this.http
                 .get<CocktailListResponse>(`${this.api}/filter.php?${attributeType}=${query}`, getJsonBodyOptions)
                 .pipe(map(cocktailListResponseToCocktailList))
-        );
     }
 
     private getFirstCocktail(cocktails: CocktailListResponse): Cocktail {

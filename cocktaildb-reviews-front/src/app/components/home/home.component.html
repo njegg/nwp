@@ -5,8 +5,10 @@
 <hr>
 
 <h2 class="w-100 text-center">Random cocktails</h2>
-
 <app-cocktail-card-list [cocktails]="randomCocktails" />
+
+<h2 class="w-100 text-center">Popular cocktails</h2>
+<app-cocktail-card-list [cocktails]="popularCocktails" />
 
 <hr>
 
@@ -14,7 +16,7 @@
 
 <form
     name="searchForm"
-    class="sticky-top rounded p-2 my-4"
+    class="rounded p-2 my-4"
     #form
 >
 
@@ -55,17 +57,6 @@
 
         <!-- Filter by dropdown value -->
         <ng-template #showDropdownFilters>
-            <!-- <select
-                [value]="searchQuery"
-                [(ngModel)]="searchQuery"
-                name="filter-dropdown"
-            >
-                <option></option>
-                <option *ngFor="let val of dropdownFilters.get(selectedFilterType)">
-                    {{ val }}
-                </option>
-            </select> -->
-
             <app-searchable-select
                 [items]="dropdownFilters.get(selectedFilterType) || []" 
                 (selectedItemChanged)="searchQuery = $event || ''"

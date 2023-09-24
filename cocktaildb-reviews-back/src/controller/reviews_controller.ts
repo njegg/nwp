@@ -5,12 +5,14 @@ import { Review, ReviewVote } from "../schema";
 import { Controller } from "./controller";
 import { authorize, getUsernameFromRequest } from "./auth/auth";
 import { StatusCodes } from "http-status-codes";
+import { Vote } from "../vote";
 
 
 export class ReviewController extends Controller {
     constructor(mapping: string) {
         super(mapping);
 
+        this.addPath("GET", "/popular", this.getMostReviewsCocktails);
         this.addPath("GET", "/{id}", this.getCocktailReviews);
         this.addPath("GET", "/{id}/{username}", this.getUserReview);
 
@@ -93,7 +95,7 @@ export class ReviewController extends Controller {
     async voteReview(req: Request, idParam: string, voteParam: string): Promise<Response> {
         let username = authorize(req);
 
-        let vote = voteFromString(voteParam);
+        let vote = Vote.voteFromString(voteParam);
 
         if (vote == undefined || vote == Vote.NONE) {
             throw new RequestError(
@@ -149,24 +151,29 @@ export class ReviewController extends Controller {
         return new Response(JSON.stringify(review));
     }
 
+    async getMostReviewsCocktails() {
+        let reviews = await Review.aggregate([
+            {
+              $group: {
+                _id: '$cocktailId', // Group by cocktailid
+                reviewcount: { $sum: 1 } // Count the number of reviews for each cocktail
+              },
+            },
+            {
+                $sort: { reviewcount: -1 },
+            },
+            {
+                $limit: 3
+            },
+            {
+                $project: { cocktailId: "$_id", _id: 0 }
+            }
+          ]).exec();
+
+        return new Response(JSON.stringify(reviews));
+    }
+
     async ok(_: Request) {
       return new Response();
     }
 }
-
-enum Vote {
-    NONE = 0,
-    UP = 1,
-    DOWN = -1,
-}
-
-function voteFromString(s: string): Vote | undefined {
-    switch (s) {
-        case "up": return Vote.UP;
-        case "down": return Vote.DOWN;
-        case "none": return Vote.NONE;
-
-        default: return undefined;
-    }
-}
-

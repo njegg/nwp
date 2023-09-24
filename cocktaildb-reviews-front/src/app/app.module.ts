@@ -1,6 +1,6 @@
 import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -22,6 +22,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { CocktailDetailsCardComponent } from './components/cocktail-details-card/cocktail-details-card.component';
 import { ReviewFormComponent } from './components/review-form/review-form.component';
 import { SearchableSelectComponent } from './components/searchable-select/searchable-select.component';
+import { AuthInterceptor } from './http-interceptors/auth-interceptor';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,11 @@ import { SearchableSelectComponent } from './components/searchable-select/search
     {
       provide: ErrorHandler,
       useClass: GlobalErrorHandler
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
     },
   ],
   bootstrap: [AppComponent]
