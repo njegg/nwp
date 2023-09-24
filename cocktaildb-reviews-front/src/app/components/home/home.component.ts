@@ -6,6 +6,7 @@ import { CocktailService } from 'src/app/services/cocktail.service';
 import { CocktailSearchType } from 'src/app/types/cocktail_search_type';
 import { SearchableSelectComponent } from '../searchable-select/searchable-select.component';
 import { ReviewsService } from 'src/app/services/reviews.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -18,6 +19,7 @@ export class HomeComponent implements OnInit {
         private cocktailService: CocktailService,
         private reviewService: ReviewsService,
         private router: Router,
+        private toastr: ToastrService,
     ) { }
 
     CocktailSearchType = CocktailSearchType;
@@ -34,8 +36,6 @@ export class HomeComponent implements OnInit {
     categories: string[] = [];
     glasses: string[] = [];
     alchocolicTypes: string[] = [];
-
-    searchComponent!: SearchableSelectComponent;
 
     /**
      * Generated letters A-Z
@@ -84,14 +84,18 @@ export class HomeComponent implements OnInit {
     }
 
     searchCocktails(type: CocktailSearchType, query: string): void {
-        if (!query) return;
-
-        this.cocktails = this.loadingCocktails;
-
         this.cocktailService.searchBy(type, query)
-            .subscribe(res => {
-                this.cocktails = res
-                this.saveCocktailsToLocalStorage();
+            .subscribe({
+                next: res => {
+                    this.cocktails = res
+                    this.saveCocktailsToLocalStorage();
+                },
+                error: err => {
+                    this.loadCocktailsFromLocalStorage();
+                    this.cocktails = this.loadingCocktails;
+                    
+                    throw err;
+                }
             });
     }
 
@@ -102,10 +106,6 @@ export class HomeComponent implements OnInit {
 
     resetSearchQuery() {
         this.searchQuery = "";
-
-        if (this.searchComponent) {
-            this.searchComponent.reset();
-        }
 }
         
     private saveCocktailsToLocalStorage() {

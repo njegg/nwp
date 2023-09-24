@@ -19,6 +19,8 @@
     max-height: 16rem;
     overflow-y: scroll;
     box-shadow: 0 5px 5px var(--rp-highlight-low);
+
+    z-index: 2;
 }
 
 input {

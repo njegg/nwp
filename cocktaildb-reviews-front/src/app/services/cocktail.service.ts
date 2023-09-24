@@ -35,8 +35,8 @@ export class CocktailService {
     }
 
     searchBy(type: CocktailSearchType, query: string): Observable<Cocktail[]> {
-        if (query.trim() === "") {
-            throw new Error("Search query is empty");
+        if (!query || query.trim() === "") {
+            throw new HttpErrorResponse({ error: { message: "Search query is empty"}, status: HttpStatusCode.BadRequest });
         }
 
         switch(type) {

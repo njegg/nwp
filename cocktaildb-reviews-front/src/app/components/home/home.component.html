@@ -4,10 +4,10 @@
 
 <hr>
 
-<h2 class="w-100 text-center">Random cocktails</h2>
+<h3 class="w-100 text-center">Random cocktails</h3>
 <app-cocktail-card-list [cocktails]="randomCocktails" />
 
-<h2 class="w-100 text-center">Popular cocktails</h2>
+<h3 class="w-100 text-center mt-4">Popular cocktails</h3>
 <app-cocktail-card-list [cocktails]="popularCocktails" />
 
 <hr>
@@ -60,7 +60,6 @@
             <app-searchable-select
                 [items]="dropdownFilters.get(selectedFilterType) || []" 
                 (selectedItemChanged)="searchQuery = $event || ''"
-                (onInit)="searchComponent = $event"
             />
         </ng-template>
 

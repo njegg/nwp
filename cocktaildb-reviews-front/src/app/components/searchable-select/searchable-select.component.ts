@@ -10,7 +10,6 @@ export class SearchableSelectComponent implements OnInit, OnChanges {
 
     @Input() items!: string[];
     @Output() selectedItemChanged = new EventEmitter<string | undefined>(undefined);
-    @Output() onInit = new EventEmitter<SearchableSelectComponent>();
 
     constructor(
         private searchService: SearchService,
@@ -22,12 +21,9 @@ export class SearchableSelectComponent implements OnInit, OnChanges {
 
     ngOnInit(): void {
         this.visibleItems = this.items;
-        this.onInit.emit(this);
     }
     
     reset() {
-        this.selectedIndex = undefined;
-        this.selectedItem = undefined;
         this.query = "";
     }
 
