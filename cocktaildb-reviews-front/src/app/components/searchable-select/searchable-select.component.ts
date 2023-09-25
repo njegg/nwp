@@ -1,5 +1,7 @@
 import { Component, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { CocktailService } from 'src/app/services/cocktail.service';
 import { SearchService } from 'src/app/services/search.service';
+import { CocktailSearchType } from 'src/app/types/cocktail_search_type';
 
 @Component({
     selector: 'app-searchable-select',
@@ -8,11 +10,12 @@ import { SearchService } from 'src/app/services/search.service';
 })
 export class SearchableSelectComponent implements OnInit, OnChanges {
 
-    @Input() items!: string[];
+    @Input() items: string[] = [];
     @Output() selectedItemChanged = new EventEmitter<string | undefined>(undefined);
 
     constructor(
         private searchService: SearchService,
+        private cs: CocktailService,
     ) {}
 
     ngOnChanges(_: SimpleChanges): void {
@@ -21,6 +24,15 @@ export class SearchableSelectComponent implements OnInit, OnChanges {
 
     ngOnInit(): void {
         this.visibleItems = this.items;
+
+        // For testing
+        if (this.items.length == 0) {
+            this.cs.getAttributes(CocktailSearchType.Glass)
+            .subscribe(res => {
+                this.items = res;
+                this.visibleItems = res;
+            });
+        }
     }
     
     reset() {
